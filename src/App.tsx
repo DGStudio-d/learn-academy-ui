@@ -56,7 +56,6 @@ const queryClient = new QueryClient({
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-<<<<<<< HEAD
     <LanguageProvider>
       <AuthProvider>
         <AppStateProvider>
@@ -65,50 +64,76 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/languages" element={<Languages />} />
-              <Route path="/teachers" element={<Teachers />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/programs" element={<Programs />} />
-              
-              {/* Protected Student Routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['student']}>
-                    <StudentDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Protected Teacher Routes */}
-              <Route 
-                path="/teacher/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['teacher']}>
-                    <TeacherDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Protected Admin Routes */}
-              <Route 
-                path="/admin/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['admin']}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/languages" element={<Languages />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/programs" element={<Programs />} />
+                
+                {/* Protected Routes */}
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student', 'teacher', 'admin']}>
+                      <Profile />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/quiz/:quizId" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student']}>
+                      <QuizAttempt />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/meeting/:meetingId" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student', 'teacher']}>
+                      <MeetingRoom />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Protected Student Routes */}
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student']}>
+                      <StudentDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Protected Teacher Routes */}
+                <Route 
+                  path="/teacher/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['teacher']}>
+                      <TeacherDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Protected Admin Routes */}
+                <Route 
+                  path="/admin/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['admin']}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </BrowserRouter>
             
             {/* React Query Devtools (development only) */}
@@ -119,32 +144,6 @@ const App = () => (
         </AppStateProvider>
       </AuthProvider>
     </LanguageProvider>
-=======
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/languages" element={<Languages />} />
-          <Route path="/teachers" element={<Teachers />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/quiz/:quizId" element={<QuizAttempt />} />
-          <Route path="/meeting/:meetingId" element={<MeetingRoom />} />
-          <Route path="/dashboard" element={<StudentDashboard />} />
-          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
->>>>>>> e4d9afc6a4c0f69517e1dc5dc79de63e1857f1a7
   </QueryClientProvider>
 );
 
