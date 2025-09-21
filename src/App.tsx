@@ -11,6 +11,9 @@ import { Teachers } from "./pages/Teachers";
 import { About } from "./pages/About";
 import { Contact } from "./pages/Contact";
 import { Programs } from "./pages/Programs";
+import { Profile } from "./pages/Profile";
+import { QuizAttempt } from "./pages/QuizAttempt";
+import { MeetingRoom } from "./pages/MeetingRoom";
 import { StudentDashboard } from "./pages/dashboard/StudentDashboard";
 import { TeacherDashboard } from "./pages/dashboard/TeacherDashboard";
 import { AdminDashboard } from "./pages/dashboard/AdminDashboard";
@@ -33,6 +36,9 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/programs" element={<Programs />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/quiz/:quizId" element={<QuizAttempt />} />
+          <Route path="/meeting/:meetingId" element={<MeetingRoom />} />
           <Route path="/dashboard" element={<StudentDashboard />} />
           <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
