@@ -94,3 +94,4 @@ export const componentSpacing = {
   
   // List spacing
   listVertical: 'space-y-2',
+}

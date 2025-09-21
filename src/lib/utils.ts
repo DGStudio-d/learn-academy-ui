@@ -38,3 +38,4 @@ export const rtlIcon = (isRTL: boolean) => isRTL ? 'rtl-flip' : '';
 export const rtlText = {
   left: (isRTL: boolean) => isRTL ? 'text-right' : 'text-left',
   right: (isRTL: boolean) => isRTL ? 'text-left' : 'text-right',
+}
