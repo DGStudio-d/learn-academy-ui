@@ -13,16 +13,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AuthLayout } from '@/components/auth/AuthLayout';
-<<<<<<< HEAD
 import { Eye, EyeOff } from 'lucide-react';
 import { useRegister } from '../../hooks/useAuth';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRegisterForm } from '../../hooks/useForm';
 import { toast } from 'sonner';
 import type { RegisterRequest } from '../../types/api';
-=======
 import { Eye, EyeOff, MessageCircle } from 'lucide-react';
->>>>>>> e4d9afc6a4c0f69517e1dc5dc79de63e1857f1a7
 
 const languages = [
   { value: 'en', label: 'English', flag: '🇺🇸' },
@@ -65,7 +62,6 @@ export function Register() {
       title="Create Account"
       subtitle="Join Learn Academy and start your language journey"
     >
-<<<<<<< HEAD
       <form onSubmit={form.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -117,7 +113,6 @@ export function Register() {
               placeholder="Create a password"
               required
             />
-=======
       <Tabs defaultValue="register" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="register">Register</TabsTrigger>
@@ -215,7 +210,6 @@ export function Register() {
               </Select>
             </div>
 
->>>>>>> e4d9afc6a4c0f69517e1dc5dc79de63e1857f1a7
             <Button
               type="submit"
               className="w-full btn-hero"
@@ -301,7 +295,6 @@ export function Register() {
               Contact us via WhatsApp
             </Button>
           </div>
-<<<<<<< HEAD
           {form.getFieldProps('password').error && (
             <p className="text-sm text-destructive">{form.getFieldProps('password').error}</p>
           )}
@@ -377,10 +370,8 @@ export function Register() {
           </Link>
         </div>
       </form>
-=======
         </TabsContent>
       </Tabs>
->>>>>>> e4d9afc6a4c0f69517e1dc5dc79de63e1857f1a7
     </AuthLayout>
   );
 }
