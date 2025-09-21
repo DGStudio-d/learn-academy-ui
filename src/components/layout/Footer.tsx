@@ -108,3 +108,5 @@ export function Footer() {
           <div className={`space-y-3 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'} text-sm text-muted-foreground`}>
             <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'} text-sm text-muted-foreground`}>
+  )
+}
