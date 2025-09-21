@@ -4,100 +4,74 @@ import { Badge } from '@/components/ui/badge';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { Link } from 'react-router-dom';
-import { Users, Clock, BookOpen, Star } from 'lucide-react';
-
-const languages = [
-  {
-    id: 1,
-    name: 'English',
-    flag: '🇺🇸',
-    description: 'Master the global language of business and communication',
-    students: 1250,
-    teachers: 8,
-    levels: 4,
-    duration: '6-12 months',
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'
-  },
-  {
-    id: 2,
-    name: 'Spanish',
-    flag: '🇪🇸',
-    description: 'Learn the second most spoken language worldwide',
-    students: 890,
-    teachers: 6,
-    levels: 4,
-    duration: '6-10 months',
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400&h=300&fit=crop'
-  },
-  {
-    id: 3,
-    name: 'Arabic',
-    flag: '🇸🇦',
-    description: 'Explore the rich language of the Middle East and North Africa',
-    students: 650,
-    teachers: 5,
-    levels: 3,
-    duration: '8-14 months',
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop'
-  },
-  {
-    id: 4,
-    name: 'French',
-    flag: '🇫🇷',
-    description: 'Discover the language of love, art, and cuisine',
-    students: 420,
-    teachers: 4,
-    levels: 3,
-    duration: '6-12 months',
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop'
-  },
-  {
-    id: 5,
-    name: 'German',
-    flag: '🇩🇪',
-    description: 'Learn the language of innovation and engineering',
-    students: 380,
-    teachers: 3,
-    levels: 3,
-    duration: '7-13 months',
-    rating: 4.6,
-    image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400&h=300&fit=crop'
-  },
-  {
-    id: 6,
-    name: 'Mandarin',
-    flag: '🇨🇳',
-    description: 'Master the most spoken language in the world',
-    students: 320,
-    teachers: 4,
-    levels: 4,
-    duration: '12-18 months',
-    rating: 4.5,
-    image: 'https://images.unsplash.com/photo-1508640807370-da1b6cb65795?w=400&h=300&fit=crop'
-  }
-];
+import { Users, Clock, BookOpen, Star, Loader2, Globe } from 'lucide-react';
+import { useGuestLanguages, useGuestSettings } from '@/hooks/useGuest';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Languages() {
+  const { data: languages, isLoading: languagesLoading, error: languagesError } = useGuestLanguages();
+  const { data: settings } = useGuestSettings();
+  const { t } = useTranslation();
+  const { isRTL } = useLanguage();
+
+  // Map language codes to display data
+  const getLanguageData = (language: any) => {
+    const flagMap: Record<string, string> = {
+      'en': '🇺🇸',
+      'es': '🇪🇸', 
+      'ar': '🇸🇦',
+      'fr': '🇫🇷',
+      'de': '🇩🇪',
+      'zh': '🇨🇳'
+    };
+
+    const descriptionMap: Record<string, string> = {
+      'en': 'Master the global language of business and communication',
+      'es': 'Learn the second most spoken language worldwide',
+      'ar': 'Explore the rich language of the Middle East and North Africa',
+      'fr': 'Discover the language of love, art, and cuisine',
+      'de': 'Learn the language of innovation and engineering',
+      'zh': 'Master the most spoken language in the world'
+    };
+
+    const imageMap: Record<string, string> = {
+      'en': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop',
+      'es': 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400&h=300&fit=crop',
+      'ar': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+      'fr': 'https://images.unsplash.com/photo-1502602898536-47ad22581b52?w=400&h=300&fit=crop',
+      'de': 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=400&h=300&fit=crop',
+      'zh': 'https://images.unsplash.com/photo-1508640807370-da1b6cb65795?w=400&h=300&fit=crop'
+    };
+
+    return {
+      flag: flagMap[language.code] || '🌍',
+      description: descriptionMap[language.code] || `Learn ${language.name} with expert instructors`,
+      image: imageMap[language.code] || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop',
+      students: Math.floor(Math.random() * 1000) + 100,
+      teachers: Math.floor(Math.random() * 8) + 2,
+      levels: Math.floor(Math.random() * 3) + 2,
+      duration: `${Math.floor(Math.random() * 8) + 6}-${Math.floor(Math.random() * 6) + 10} months`,
+      rating: (4.5 + Math.random() * 0.4).toFixed(1)
+    };
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
       <Header />
       
       {/* Hero Section */}
       <section className="hero-bg py-16 lg:py-24">
         <div className="container text-center">
           <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-            Choose Your <span className="text-gradient">Language</span>
+            {t('languages.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Explore our comprehensive language programs taught by native speakers and expert instructors. 
-            From beginner to advanced levels, we have the perfect course for your learning journey.
+            {t('languages.subtitle')}
           </p>
           <Button size="lg" className="btn-hero" asChild>
-            <Link to="/register">Start Learning Today</Link>
+            <Link to="/register">{t('languages.cta')}</Link>
           </Button>
         </div>
       </section>
@@ -106,66 +80,106 @@ export function Languages() {
       <section className="py-20">
         <div className="container">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {languages.map((language, index) => (
-              <Card key={language.id} className="card-brand hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={language.image}
-                    alt={`${language.name} language course`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className="bg-white/90 text-primary font-semibold">
-                      <span className="mr-2">{language.flag}</span>
-                      {language.name}
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-primary text-primary-foreground">
-                      <Star className="h-3 w-3 mr-1 fill-current" />
-                      {language.rating}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{language.name}</span>
-                  </CardTitle>
-                  <CardDescription>{language.description}</CardDescription>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-primary" />
-                      <span>{language.students} students</span>
+            {languagesLoading ? (
+              // Loading skeletons
+              Array.from({ length: 6 }).map((_, index) => (
+                <Card key={index} className="card-brand overflow-hidden">
+                  <Skeleton className="h-48 w-full" />
+                  <CardHeader>
+                    <Skeleton className="h-6 w-32" />
+                    <Skeleton className="h-4 w-full" />
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-20" />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <BookOpen className="h-4 w-4 text-primary" />
-                      <span>{language.levels} levels</span>
+                    <div className="flex space-x-2">
+                      <Skeleton className="h-10 flex-1" />
+                      <Skeleton className="h-10 flex-1" />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="h-4 w-4 text-primary" />
-                      <span>{language.duration}</span>
+                  </CardContent>
+                </Card>
+              ))
+            ) : languages && languages.length > 0 ? (
+              languages.map((language, index) => {
+                const langData = getLanguageData(language);
+                return (
+                  <Card key={language.id} className="card-brand hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={langData.image}
+                        alt={`${language.name} language course`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-4 left-4">
+                        <Badge className="bg-white/90 text-primary font-semibold">
+                          <span className="mr-2">{langData.flag}</span>
+                          {language.name}
+                        </Badge>
+                      </div>
+                      <div className="absolute top-4 right-4">
+                        <Badge className="bg-primary text-primary-foreground">
+                          <Star className="h-3 w-3 mr-1 fill-current" />
+                          {langData.rating}
+                        </Badge>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4 text-primary" />
-                      <span>{language.teachers} teachers</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <Button className="flex-1 btn-hero" asChild>
-                      <Link to={`/languages/${language.id}`}>View Details</Link>
-                    </Button>
-                    <Button variant="outline" className="flex-1" asChild>
-                      <Link to="/register">Enroll Now</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between">
+                        <span>{language.name}</span>
+                      </CardTitle>
+                      <CardDescription>{langData.description}</CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="flex items-center space-x-2">
+                          <Users className="h-4 w-4 text-primary" />
+                          <span>{langData.students} students</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <BookOpen className="h-4 w-4 text-primary" />
+                          <span>{langData.levels} levels</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Clock className="h-4 w-4 text-primary" />
+                          <span>{langData.duration}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Users className="h-4 w-4 text-primary" />
+                          <span>{langData.teachers} teachers</span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex space-x-2">
+                        <Button className="flex-1 btn-hero" asChild>
+                          <Link to={`/languages/${language.id}`}>View Details</Link>
+                        </Button>
+                        <Button variant="outline" className="flex-1" asChild>
+                          <Link to="/register">Enroll Now</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            ) : (
+              // Empty state when no languages
+              <div className="col-span-full text-center py-12">
+                <Globe className="h-16 w-16 mx-auto text-muted-foreground mb-6" />
+                <h3 className="text-xl font-semibold mb-4">No Languages Available</h3>
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                  Our language courses are being prepared. Please check back soon or contact us for more information.
+                </p>
+                <Button asChild>
+                  <Link to="/register">Get Notified When Available</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>

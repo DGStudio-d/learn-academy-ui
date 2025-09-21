@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { toast } from 'sonner';
 import { 
   Users, 
   BookOpen, 
@@ -17,34 +18,49 @@ import {
   UserCheck,
   FileText,
   Eye,
-  EyeOff
+  EyeOff,
+  Loader2
 } from 'lucide-react';
-
-const adminStats = [
-  { label: 'Total Users', value: '2,847', icon: Users },
-  { label: 'Active Programs', value: '24', icon: BookOpen },
-  { label: 'Languages', value: '6', icon: Globe },
-  { label: 'Teachers', value: '42', icon: UserCheck },
-];
-
-const recentUsers = [
-  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Student', joined: '2024-01-10', status: 'Active' },
-  { id: 2, name: 'Sarah Wilson', email: 'sarah@example.com', role: 'Teacher', joined: '2024-01-09', status: 'Active' },
-  { id: 3, name: 'Mike Chen', email: 'mike@example.com', role: 'Student', joined: '2024-01-08', status: 'Pending' },
-];
-
-const languages = [
-  { id: 1, name: 'English', students: 1250, teachers: 8, levels: 4, programs: 12 },
-  { id: 2, name: 'Spanish', students: 890, teachers: 6, levels: 4, programs: 10 },
-  { id: 3, name: 'Arabic', students: 650, teachers: 5, levels: 3, programs: 8 },
-];
+import {
+  useAdminDashboardStats,
+  useAdminUsers,
+  useAdminLanguages,
+  useAdminSettings,
+  useUpdateAdminSettings
+} from '../../hooks/useAdmin';
+import { useAuth } from '../../contexts/AuthContext';
 
 export function AdminDashboard() {
-  const [guestSettings, setGuestSettings] = useState({
-    allowGuestLanguages: true,
-    allowGuestTeachers: true,
-    allowGuestQuizzes: false,
-  });
+  const { user } = useAuth();
+  const { data: stats, isLoading: statsLoading } = useAdminDashboardStats();
+  const { data: usersData, isLoading: usersLoading } = useAdminUsers(1, { sort_by: 'created_at', sort_order: 'desc' });
+  const { data: languages, isLoading: languagesLoading } = useAdminLanguages();
+  const { data: settings, isLoading: settingsLoading } = useAdminSettings();
+  const updateSettingsMutation = useUpdateAdminSettings();
+
+  const handleSettingChange = async (setting: string, value: boolean) => {
+    try {
+      await updateSettingsMutation.mutateAsync({
+        [setting]: value
+      });
+      toast.success('Settings updated successfully');
+    } catch (error: any) {
+      toast.error('Failed to update settings', {
+        description: error.message
+      });
+    }
+  };
+  
+  if (statsLoading) {
+    return (
+      <div className="container py-8 flex items-center justify-center min-h-[400px]">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>Loading admin dashboard...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-8 space-y-8">
@@ -56,19 +72,53 @@ export function AdminDashboard() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {adminStats.map((stat, index) => (
-          <Card key={stat.label} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <stat.icon className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </div>
+        <Card className="animate-scale-in">
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-2">
+              <Users className="h-5 w-5 text-primary" />
+              <div>
+                <div className="text-2xl font-bold">{stats?.total_users || 0}</div>
+                <div className="text-sm text-muted-foreground">Total Users</div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="animate-scale-in" style={{ animationDelay: '0.1s' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-2">
+              <BookOpen className="h-5 w-5 text-primary" />
+              <div>
+                <div className="text-2xl font-bold">{stats?.total_programs || 0}</div>
+                <div className="text-sm text-muted-foreground">Active Programs</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="animate-scale-in" style={{ animationDelay: '0.2s' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-2">
+              <Globe className="h-5 w-5 text-primary" />
+              <div>
+                <div className="text-2xl font-bold">{languages?.length || 0}</div>
+                <div className="text-sm text-muted-foreground">Languages</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card className="animate-scale-in" style={{ animationDelay: '0.3s' }}>
+          <CardContent className="p-6">
+            <div className="flex items-center space-x-2">
+              <UserCheck className="h-5 w-5 text-primary" />
+              <div>
+                <div className="text-2xl font-bold">{stats?.active_teachers || 0}</div>
+                <div className="text-sm text-muted-foreground">Teachers</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Main Content */}
@@ -91,22 +141,36 @@ export function AdminDashboard() {
                 <CardDescription>Latest user registrations</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {recentUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">{user.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {user.email} • {user.role}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant={user.status === 'Active' ? 'default' : 'secondary'}>
-                        {user.status}
-                      </Badge>
-                      <div className="text-sm text-muted-foreground mt-1">{user.joined}</div>
-                    </div>
+                {usersLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin" />
                   </div>
-                ))}
+                ) : usersData?.data?.data && usersData.data.data.length > 0 ? (
+                  usersData.data.data.slice(0, 5).map((user) => (
+                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <h3 className="font-semibold">{user.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {user.email} • {user.role}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <Badge variant="default">
+                          Active
+                        </Badge>
+                        <div className="text-sm text-muted-foreground mt-1">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No users found</p>
+                    <p className="text-sm">Users will appear here as they register</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
@@ -164,27 +228,39 @@ export function AdminDashboard() {
                 </div>
                 
                 <div className="space-y-2">
-                  {recentUsers.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
-                          <Users className="h-5 w-5 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">{user.name}</h3>
-                          <p className="text-sm text-muted-foreground">{user.email}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <Badge variant="outline">{user.role}</Badge>
-                        <Badge variant={user.status === 'Active' ? 'default' : 'secondary'}>
-                          {user.status}
-                        </Badge>
-                        <Button size="sm" variant="outline">Edit</Button>
-                        <Button size="sm" variant="destructive">Suspend</Button>
-                      </div>
+                  {usersLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin" />
                     </div>
-                  ))}
+                  ) : usersData?.data?.data && usersData.data.data.length > 0 ? (
+                    usersData.data.data.map((user) => (
+                      <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
+                            <Users className="h-5 w-5 text-primary-foreground" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold">{user.name}</h3>
+                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-4">
+                          <Badge variant="outline">{user.role}</Badge>
+                          <Badge variant="default">
+                            Active
+                          </Badge>
+                          <Button size="sm" variant="outline">Edit</Button>
+                          <Button size="sm" variant="destructive">Suspend</Button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No users found</p>
+                      <p className="text-sm">Users will appear here as they register</p>
+                    </div>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -205,28 +281,40 @@ export function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {languages.map((language) => (
-                  <div key={language.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
-                        <Globe className="h-5 w-5 text-primary-foreground" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">{language.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {language.students} students • {language.teachers} teachers
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <div className="text-sm text-muted-foreground">
-                        {language.levels} levels • {language.programs} programs
-                      </div>
-                      <Button size="sm" variant="outline">Edit</Button>
-                      <Button size="sm">View Programs</Button>
-                    </div>
+                {languagesLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-6 w-6 animate-spin" />
                   </div>
-                ))}
+                ) : languages && languages.length > 0 ? (
+                  languages.map((language) => (
+                    <div key={language.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
+                          <Globe className="h-5 w-5 text-primary-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">{language.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            Active language
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <div className="text-sm text-muted-foreground">
+                          Code: {language.code.toUpperCase()}
+                        </div>
+                        <Button size="sm" variant="outline">Edit</Button>
+                        <Button size="sm">View Programs</Button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>No languages found</p>
+                    <p className="text-sm">Add languages to get started</p>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -267,10 +355,9 @@ export function AdminDashboard() {
                   <p className="text-sm text-muted-foreground">Let visitors browse available languages</p>
                 </div>
                 <Switch
-                  checked={guestSettings.allowGuestLanguages}
-                  onCheckedChange={(checked) =>
-                    setGuestSettings(prev => ({ ...prev, allowGuestLanguages: checked }))
-                  }
+                  checked={settings?.guest_can_access_languages || false}
+                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_languages', checked)}
+                  disabled={updateSettingsMutation.isPending}
                 />
               </div>
               
@@ -280,10 +367,9 @@ export function AdminDashboard() {
                   <p className="text-sm text-muted-foreground">Show teacher profiles to non-registered users</p>
                 </div>
                 <Switch
-                  checked={guestSettings.allowGuestTeachers}
-                  onCheckedChange={(checked) =>
-                    setGuestSettings(prev => ({ ...prev, allowGuestTeachers: checked }))
-                  }
+                  checked={settings?.guest_can_access_teachers || false}
+                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_teachers', checked)}
+                  disabled={updateSettingsMutation.isPending}
                 />
               </div>
               
@@ -293,10 +379,9 @@ export function AdminDashboard() {
                   <p className="text-sm text-muted-foreground">Let visitors try sample quizzes</p>
                 </div>
                 <Switch
-                  checked={guestSettings.allowGuestQuizzes}
-                  onCheckedChange={(checked) =>
-                    setGuestSettings(prev => ({ ...prev, allowGuestQuizzes: checked }))
-                  }
+                  checked={settings?.guest_can_access_quizzes || false}
+                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_quizzes', checked)}
+                  disabled={updateSettingsMutation.isPending}
                 />
               </div>
             </CardContent>

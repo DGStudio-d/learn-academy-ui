@@ -9,16 +9,13 @@ import {
 } from '@/components/ui/select';
 import { Globe, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-];
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState('en');
+  const { t } = useTranslation();
+  const { currentLanguage, changeLanguage, supportedLanguages, isRTL } = useLanguage();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,27 +29,30 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center gap-6">
+          <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
+            {t('nav.home')}
+          </Link>
           <Link to="/languages" className="text-sm font-medium hover:text-primary transition-colors">
-            Languages
+            {t('nav.languages')}
           </Link>
           <Link to="/teachers" className="text-sm font-medium hover:text-primary transition-colors">
-            Teachers
+            {t('nav.teachers')}
           </Link>
           <Link to="/about" className="text-sm font-medium hover:text-primary transition-colors">
-            About
+            {t('nav.about')}
           </Link>
         </nav>
 
         {/* Language Selector & Auth Buttons */}
-        <div className="flex items-center space-x-4">
-          <Select value={currentLang} onValueChange={setCurrentLang}>
+        <div className="flex items-center gap-4">
+          <Select value={currentLanguage} onValueChange={changeLanguage}>
             <SelectTrigger className="w-[140px]">
               <Globe className="h-4 w-4" />
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {languages.map((lang) => (
+              {supportedLanguages.map((lang) => (
                 <SelectItem key={lang.code} value={lang.code}>
                   <span className="flex items-center space-x-2">
                     <span>{lang.flag}</span>
@@ -63,12 +63,12 @@ export function Header() {
             </SelectContent>
           </Select>
 
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center gap-3">
             <Button variant="ghost" asChild>
-              <Link to="/login">Login</Link>
+              <Link to="/login">{t('nav.login')}</Link>
             </Button>
             <Button className="btn-hero" asChild>
-              <Link to="/register">Get Started</Link>
+              <Link to="/register">{t('nav.register')}</Link>
             </Button>
           </div>
 
@@ -89,29 +89,35 @@ export function Header() {
         <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
           <nav className="container py-4 space-y-3">
             <Link 
+              to="/" 
+              className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+            >
+              {t('nav.home')}
+            </Link>
+            <Link 
               to="/languages" 
               className="block py-2 text-sm font-medium hover:text-primary transition-colors"
             >
-              Languages
+              {t('nav.languages')}
             </Link>
             <Link 
               to="/teachers" 
               className="block py-2 text-sm font-medium hover:text-primary transition-colors"
             >
-              Teachers
+              {t('nav.teachers')}
             </Link>
             <Link 
               to="/about" 
               className="block py-2 text-sm font-medium hover:text-primary transition-colors"
             >
-              About
+              {t('nav.about')}
             </Link>
-            <div className="flex space-x-2 pt-4">
+            <div className="flex gap-3 pt-4">
               <Button variant="ghost" asChild className="flex-1">
-                <Link to="/login">Login</Link>
+                <Link to="/login">{t('nav.login')}</Link>
               </Button>
               <Button className="btn-hero flex-1" asChild>
-                <Link to="/register">Get Started</Link>
+                <Link to="/register">{t('nav.register')}</Link>
               </Button>
             </div>
           </nav>

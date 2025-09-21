@@ -17,7 +17,7 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               Empowering global communication through innovative language learning experiences.
             </p>
-            <div className="flex space-x-3">
+            <div className="flex gap-4">
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
@@ -72,15 +72,15 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-semibold">Contact</h4>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
                 <span>hello@learnacademy.com</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone className="h-4 w-4" />
                 <span>+1 (555) 123-4567</span>
               </div>
-              <div className="flex items-center space-x-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span>123 Learning St, Education City</span>
               </div>
