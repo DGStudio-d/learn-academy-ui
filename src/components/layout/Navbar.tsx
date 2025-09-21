@@ -10,9 +10,11 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { LogOut, User } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLogout } from '../../hooks/useAuth';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 export function Navbar() {
   const { user, isAuthenticated } = useAuth();
+  const { isRTL } = useLanguage();
   const navigate = useNavigate();
   const logoutMutation = useLogout();
 
@@ -32,14 +34,14 @@ export function Navbar() {
   return (
     <nav className="border-b bg-background/95 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center space-x-3">
+        <Link to="/" className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'space-x-3'}`}>
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">
             <span className="text-sm font-bold text-primary-foreground">LA</span>
           </div>
           <span className="font-bold text-lg text-gradient">Learn Academy</span>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center ${isRTL ? 'rtl-gap-4' : 'gap-4'}`}>
           {isAuthenticated && user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -64,7 +66,7 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'}`}>
               <Button variant="outline" asChild>
                 <Link to="/login">Login</Link>
               </Button>

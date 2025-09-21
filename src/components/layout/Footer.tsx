@@ -81,9 +81,9 @@ export function Footer() {
                 <span>+1 (555) 123-4567</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <MapPin className="h-4 w-4" />
+            <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'} text-sm text-muted-foreground`}>
                 <span>123 Learning St, Education City</span>
-              </div>
+          <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'space-x-3'}`}>
             </div>
           </div>
         </div>
@@ -92,8 +92,8 @@ export function Footer() {
           <p className="text-sm text-muted-foreground">
             © 2024 Learn Academy. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+          <div className={`flex ${isRTL ? 'rtl-gap-4' : 'gap-4'}`}>
+        <div className={`flex ${isRTL ? 'rtl-gap-6' : 'space-x-6'} mt-4 md:mt-0`}>
               Privacy Policy
             </Link>
             <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
@@ -105,3 +105,6 @@ export function Footer() {
     </footer>
   );
 }
+          <div className={`space-y-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'} text-sm text-muted-foreground`}>
+            <div className={`flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'} text-sm text-muted-foreground`}>

@@ -68,31 +68,29 @@ export const spacing = {
 
 // Component-specific spacing presets
 export const componentSpacing = {
-  navbar: `flex items-center ${SPACING.navbar.container}`,
-  navbarLogo: `flex items-center ${SPACING.navbar.logo}`,
-  navbarActions: `flex items-center ${SPACING.navbar.actions}`,
+  navbar: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-4' : SPACING.navbar.container}`,
+  navbarLogo: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-3' : SPACING.navbar.logo}`,
+  navbarActions: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-3' : SPACING.navbar.actions}`,
   
-  headerNav: `hidden md:flex items-center ${SPACING.header.navigation}`,
-  headerActions: `flex items-center ${SPACING.header.actions}`,
+  headerNav: (isRTL: boolean) => `hidden md:flex items-center ${isRTL ? 'rtl-gap-6' : SPACING.header.navigation}`,
+  headerActions: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-3' : SPACING.header.actions}`,
   
-  footerSections: `grid grid-cols-1 md:grid-cols-4 ${SPACING.footer.sections}`,
+  footerSections: (isRTL: boolean) => `grid grid-cols-1 md:grid-cols-4 ${isRTL ? 'rtl-gap-8' : SPACING.footer.sections}`,
   footerContact: `space-y-3`,
-  footerSocial: `flex ${SPACING.footer.social}`,
+  footerSocial: (isRTL: boolean) => `flex ${isRTL ? 'rtl-gap-4' : SPACING.footer.social}`,
   
   // Button groups
-  buttonGroup: `flex items-center ${SPACING.md}`,
-  buttonGroupSm: `flex items-center ${SPACING.sm}`,
+  buttonGroup: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-3' : SPACING.md}`,
+  buttonGroupSm: (isRTL: boolean) => `flex items-center ${isRTL ? 'rtl-gap-2' : SPACING.sm}`,
   
   // Form spacing
   formField: 'space-y-2',
   formGroup: 'space-y-4',
-  formActions: `flex items-center justify-end ${SPACING.md}`,
+  formActions: (isRTL: boolean) => `flex items-center ${isRTL ? 'justify-start rtl-gap-3' : 'justify-end gap-3'}`,
   
   // Card spacing
   cardContent: 'space-y-4',
-  cardActions: `flex items-center justify-between ${SPACING.md}`,
+  cardActions: (isRTL: boolean) => `flex items-center justify-between ${isRTL ? 'rtl-gap-3' : SPACING.md}`,
   
   // List spacing
   listVertical: 'space-y-2',
-  listHorizontal: `flex items-center ${SPACING.md}`
-}
