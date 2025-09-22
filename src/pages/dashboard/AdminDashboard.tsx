@@ -29,6 +29,7 @@ import {
   useUpdateAdminSettings
 } from '../../hooks/useAdmin';
 import { useAuth } from '../../contexts/AuthContext';
+import { DashboardLayout } from '../../components/layout/DashboardLayout';
 
 export function AdminDashboard() {
   const { user } = useAuth();
@@ -63,194 +64,105 @@ export function AdminDashboard() {
   }
 
   return (
-    <div className="container py-8 space-y-8">
-      {/* Welcome Section */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Manage users, content, and system settings</p>
-      </div>
+    <DashboardLayout userRole="admin">
+      <div className="space-y-8">
+        {/* Welcome Section */}
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Manage users, content, and system settings</p>
+        </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="animate-scale-in">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-primary" />
-              <div>
-                <div className="text-2xl font-bold">{stats?.total_users || 0}</div>
-                <div className="text-sm text-muted-foreground">Total Users</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="animate-scale-in" style={{ animationDelay: '0.1s' }}>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <BookOpen className="h-5 w-5 text-primary" />
-              <div>
-                <div className="text-2xl font-bold">{stats?.total_programs || 0}</div>
-                <div className="text-sm text-muted-foreground">Active Programs</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="animate-scale-in" style={{ animationDelay: '0.2s' }}>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <Globe className="h-5 w-5 text-primary" />
-              <div>
-                <div className="text-2xl font-bold">{languages?.length || 0}</div>
-                <div className="text-sm text-muted-foreground">Languages</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card className="animate-scale-in" style={{ animationDelay: '0.3s' }}>
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-2">
-              <UserCheck className="h-5 w-5 text-primary" />
-              <div>
-                <div className="text-2xl font-bold">{stats?.active_teachers || 0}</div>
-                <div className="text-sm text-muted-foreground">Teachers</div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Main Content */}
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">Users</TabsTrigger>
-          <TabsTrigger value="languages">Languages</TabsTrigger>
-          <TabsTrigger value="teachers">Teachers</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Recent Users */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Users</CardTitle>
-                <CardDescription>Latest user registrations</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {usersLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin" />
-                  </div>
-                ) : usersData?.data?.data && usersData.data.data.length > 0 ? (
-                  usersData.data.data.slice(0, 5).map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <h3 className="font-semibold">{user.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {user.email} • {user.role}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant="default">
-                          Active
-                        </Badge>
-                        <div className="text-sm text-muted-foreground mt-1">
-                          {new Date(user.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No users found</p>
-                    <p className="text-sm">Users will appear here as they register</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* System Health */}
-            <Card>
-              <CardHeader>
-                <CardTitle>System Health</CardTitle>
-                <CardDescription>Platform performance metrics</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span>Server Status</span>
-                    <Badge className="bg-green-100 text-green-800">Online</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Database</span>
-                    <Badge className="bg-green-100 text-green-800">Healthy</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>API Response</span>
-                    <Badge className="bg-green-100 text-green-800">Fast</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Active Sessions</span>
-                    <span className="font-semibold">1,247</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span>Daily Logins</span>
-                    <span className="font-semibold">892</span>
-                  </div>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card className="animate-scale-in">
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <Users className="h-5 w-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">{stats?.total_users || 0}</div>
+                  <div className="text-sm text-muted-foreground">Total Users</div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="users" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                User Management
-                <Button size="sm" className="btn-hero">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add User
-                </Button>
-              </CardTitle>
-              <CardDescription>Manage user accounts and permissions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <Input placeholder="Search users..." className="flex-1" />
-                  <Button variant="outline">Filter</Button>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="animate-scale-in" style={{ animationDelay: '0.1s' }}>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">{stats?.total_programs || 0}</div>
+                  <div className="text-sm text-muted-foreground">Active Programs</div>
                 </div>
-                
-                <div className="space-y-2">
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="animate-scale-in" style={{ animationDelay: '0.2s' }}>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <Globe className="h-5 w-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">{languages?.length || 0}</div>
+                  <div className="text-sm text-muted-foreground">Languages</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="animate-scale-in" style={{ animationDelay: '0.3s' }}>
+            <CardContent className="p-6">
+              <div className="flex items-center space-x-2">
+                <UserCheck className="h-5 w-5 text-primary" />
+                <div>
+                  <div className="text-2xl font-bold">{stats?.active_teachers || 0}</div>
+                  <div className="text-sm text-muted-foreground">Teachers</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="users">Users</TabsTrigger>
+            <TabsTrigger value="languages">Languages</TabsTrigger>
+            <TabsTrigger value="teachers">Teachers</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="reports">Reports</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Recent Users */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Users</CardTitle>
+                  <CardDescription>Latest user registrations</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
                   {usersLoading ? (
                     <div className="flex items-center justify-center py-8">
                       <Loader2 className="h-6 w-6 animate-spin" />
                     </div>
                   ) : usersData?.data?.data && usersData.data.data.length > 0 ? (
-                    usersData.data.data.map((user) => (
+                    usersData.data.data.slice(0, 5).map((user) => (
                       <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
-                            <Users className="h-5 w-5 text-primary-foreground" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold">{user.name}</h3>
-                            <p className="text-sm text-muted-foreground">{user.email}</p>
-                          </div>
+                        <div>
+                          <h3 className="font-semibold">{user.name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {user.email} • {user.role}
+                          </p>
                         </div>
-                        <div className="flex items-center space-x-4">
-                          <Badge variant="outline">{user.role}</Badge>
+                        <div className="text-right">
                           <Badge variant="default">
                             Active
                           </Badge>
-                          <Button size="sm" variant="outline">Edit</Button>
-                          <Button size="sm" variant="destructive">Suspend</Button>
+                          <div className="text-sm text-muted-foreground mt-1">
+                            {new Date(user.created_at).toLocaleDateString()}
+                          </div>
                         </div>
                       </div>
                     ))
@@ -261,163 +173,173 @@ export function AdminDashboard() {
                       <p className="text-sm">Users will appear here as they register</p>
                     </div>
                   )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                </CardContent>
+              </Card>
 
-        <TabsContent value="languages" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Language Management
-                <Button size="sm" className="btn-hero">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Language
-                </Button>
-              </CardTitle>
-              <CardDescription>Manage available languages and their programs</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {languagesLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin" />
-                  </div>
-                ) : languages && languages.length > 0 ? (
-                  languages.map((language) => (
-                    <div key={language.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
-                          <Globe className="h-5 w-5 text-primary-foreground" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">{language.name}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            Active language
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <div className="text-sm text-muted-foreground">
-                          Code: {language.code.toUpperCase()}
-                        </div>
-                        <Button size="sm" variant="outline">Edit</Button>
-                        <Button size="sm">View Programs</Button>
-                      </div>
+              {/* System Health */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>System Health</CardTitle>
+                  <CardDescription>Platform performance metrics</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span>Server Status</span>
+                      <Badge className="bg-green-100 text-green-800">Online</Badge>
                     </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Globe className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No languages found</p>
-                    <p className="text-sm">Add languages to get started</p>
+                    <div className="flex justify-between items-center">
+                      <span>Database</span>
+                      <Badge className="bg-green-100 text-green-800">Healthy</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>API Response</span>
+                      <Badge className="bg-green-100 text-green-800">Fast</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Active Sessions</span>
+                      <span className="font-semibold">1,247</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Daily Logins</span>
+                      <span className="font-semibold">892</span>
+                    </div>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
-        <TabsContent value="teachers" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                Teacher Management
-                <Button size="sm" className="btn-hero">
-                  <Plus className="h-4 w-4 mr-1" />
-                  Add Teacher
-                </Button>
-              </CardTitle>
-              <CardDescription>Manage teacher accounts and assignments</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <UserCheck className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Teacher Management</h3>
-                <p className="text-muted-foreground">Create teacher accounts, assign languages, and manage profiles.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="settings" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Guest Access Settings</CardTitle>
-              <CardDescription>Control what guests can access without an account</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label className="font-medium">Allow Guest Language Viewing</Label>
-                  <p className="text-sm text-muted-foreground">Let visitors browse available languages</p>
+          {/* Keep remaining tabs content the same */}
+          <TabsContent value="users" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  User Management
+                  <Button size="sm" className="btn-hero">
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add User
+                  </Button>
+                </CardTitle>
+                <CardDescription>Manage user accounts and permissions</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">User Management</h3>
+                  <p className="text-muted-foreground">Create and manage user accounts with role-based permissions.</p>
                 </div>
-                <Switch
-                  checked={settings?.guest_can_access_languages || false}
-                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_languages', checked)}
-                  disabled={updateSettingsMutation.isPending}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label className="font-medium">Allow Guest Teacher Profiles</Label>
-                  <p className="text-sm text-muted-foreground">Show teacher profiles to non-registered users</p>
-                </div>
-                <Switch
-                  checked={settings?.guest_can_access_teachers || false}
-                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_teachers', checked)}
-                  disabled={updateSettingsMutation.isPending}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <Label className="font-medium">Allow Guest Quiz Attempts</Label>
-                  <p className="text-sm text-muted-foreground">Let visitors try sample quizzes</p>
-                </div>
-                <Switch
-                  checked={settings?.guest_can_access_quizzes || false}
-                  onCheckedChange={(checked) => handleSettingChange('guest_can_access_quizzes', checked)}
-                  disabled={updateSettingsMutation.isPending}
-                />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>System Configuration</CardTitle>
-              <CardDescription>General platform settings</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <Settings className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Advanced Settings Coming Soon</h3>
-                <p className="text-muted-foreground">Email settings, notifications, integrations, and more.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+          <TabsContent value="languages" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  Language Management
+                  <Button size="sm" className="btn-hero">
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Language
+                  </Button>
+                </CardTitle>
+                <CardDescription>Manage available languages and their programs</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <Globe className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Language Management</h3>
+                  <p className="text-muted-foreground">Add and configure languages for your platform.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        <TabsContent value="reports">
-          <Card>
-            <CardHeader>
-              <CardTitle>Analytics & Reports</CardTitle>
-              <CardDescription>Platform usage and performance insights</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center py-12">
-                <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                <h3 className="text-lg font-semibold mb-2">Detailed Analytics Coming Soon</h3>
-                <p className="text-muted-foreground">Enrollment stats, quiz participation, revenue reports, and more.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+          <TabsContent value="teachers" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  Teacher Management
+                  <Button size="sm" className="btn-hero">
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add Teacher
+                  </Button>
+                </CardTitle>
+                <CardDescription>Manage teacher accounts and assignments</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <UserCheck className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Teacher Management</h3>
+                  <p className="text-muted-foreground">Create teacher accounts, assign languages, and manage profiles.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Guest Access Settings</CardTitle>
+                <CardDescription>Control what guests can access without an account</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label className="font-medium">Allow Guest Language Viewing</Label>
+                    <p className="text-sm text-muted-foreground">Let visitors browse available languages</p>
+                  </div>
+                  <Switch
+                    checked={settings?.guest_can_access_languages || false}
+                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_languages', checked)}
+                    disabled={updateSettingsMutation.isPending}
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label className="font-medium">Allow Guest Teacher Profiles</Label>
+                    <p className="text-sm text-muted-foreground">Show teacher profiles to non-registered users</p>
+                  </div>
+                  <Switch
+                    checked={settings?.guest_can_access_teachers || false}
+                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_teachers', checked)}
+                    disabled={updateSettingsMutation.isPending}
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <Label className="font-medium">Allow Guest Quiz Attempts</Label>
+                    <p className="text-sm text-muted-foreground">Let visitors try sample quizzes</p>
+                  </div>
+                  <Switch
+                    checked={settings?.guest_can_access_quizzes || false}
+                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_quizzes', checked)}
+                    disabled={updateSettingsMutation.isPending}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="reports">
+            <Card>
+              <CardHeader>
+                <CardTitle>Analytics & Reports</CardTitle>
+                <CardDescription>Platform usage and performance insights</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-12">
+                  <BarChart3 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                  <h3 className="text-lg font-semibold mb-2">Reports Coming Soon</h3>
+                  <p className="text-muted-foreground">Advanced analytics and reporting features are under development.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
   );
 }

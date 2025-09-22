@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react'
-import type React from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 
 // Performance monitoring utilities
 export class PerformanceMonitor {
@@ -204,7 +203,7 @@ export function withPerformanceTracking<T extends object>(
       }
     }, [trackRender])
 
-    return <WrappedComponent {...props} />
+    return React.createElement(WrappedComponent, props)
   }
 }
 
