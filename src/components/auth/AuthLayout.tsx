@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -9,12 +10,14 @@ interface AuthLayoutProps {
 }
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
+  const { isRTL } = useLanguage();
+  
   return (
-    <div className="min-h-screen hero-bg flex items-center justify-center p-4">
+    <div className={`min-h-screen hero-bg flex items-center justify-center p-4 ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center space-x-3">
+          <Link to="/" className={`inline-flex items-center ${isRTL ? 'rtl-gap-3' : 'space-x-3'}`}>
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-primary shadow-brand">
               <span className="text-xl font-bold text-primary-foreground">LA</span>
             </div>

@@ -29,7 +29,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className={`hidden md:flex items-center ${isRTL ? 'rtl-gap-6' : 'gap-6'}`}>
           <Link to="/" className="text-sm font-medium hover:text-primary transition-colors">
             {t('nav.home')}
           </Link>
@@ -45,7 +45,7 @@ export function Header() {
         </nav>
 
         {/* Language Selector & Auth Buttons */}
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center ${isRTL ? 'rtl-gap-4' : 'gap-4'}`}>
           <Select value={currentLanguage} onValueChange={changeLanguage}>
             <SelectTrigger className="w-[140px]">
               <Globe className="h-4 w-4" />
@@ -54,7 +54,7 @@ export function Header() {
             <SelectContent>
               {supportedLanguages.map((lang) => (
                 <SelectItem key={lang.code} value={lang.code}>
-                  <span className="flex items-center space-x-2">
+                  <span className={`flex items-center ${isRTL ? 'rtl-gap-2' : 'space-x-2'}`}>
                     <span>{lang.flag}</span>
                     <span>{lang.name}</span>
                   </span>
@@ -63,7 +63,7 @@ export function Header() {
             </SelectContent>
           </Select>
 
-          <div className="hidden md:flex items-center gap-3">
+          <div className={`hidden md:flex items-center ${isRTL ? 'rtl-gap-3' : 'gap-3'}`}>
             <Button variant="ghost" asChild>
               <Link to="/login">{t('nav.login')}</Link>
             </Button>
@@ -112,7 +112,7 @@ export function Header() {
             >
               {t('nav.about')}
             </Link>
-            <div className="flex gap-3 pt-4">
+            <div className={`flex ${isRTL ? 'rtl-gap-3' : 'gap-3'} pt-4`}>
               <Button variant="ghost" asChild className="flex-1">
                 <Link to="/login">{t('nav.login')}</Link>
               </Button>

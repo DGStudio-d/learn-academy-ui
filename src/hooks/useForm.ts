@@ -54,7 +54,7 @@ export function useForm<T extends Record<string, any>>(options: UseFormOptions<T
   // Validate single field
   const validateSingleField = useCallback((name: keyof T, value: any) => {
     try {
-      const fieldSchema = schema.shape[name as string];
+      const fieldSchema = schema?.shape[name as string];
       if (fieldSchema) {
         const validation = validateField(fieldSchema, value);
         return validation;

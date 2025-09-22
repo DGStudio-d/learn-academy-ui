@@ -31,20 +31,16 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error: any) => {
-        // Don't retry on 401, 403, or 404 errors
-        if (error?.response?.status === 401 || 
-            error?.response?.status === 403 || 
-            error?.response?.status === 404) {
+        if ([401, 403, 404].includes(error?.response?.status)) {
           return false;
         }
         return failureCount < 3;
       },
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
     },
     mutations: {
       retry: (failureCount, error: any) => {
-        // Don't retry mutations on client errors
         if (error?.response?.status >= 400 && error?.response?.status < 500) {
           return false;
         }
@@ -64,53 +60,74 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/languages" element={<Languages />} />
-              <Route path="/teachers" element={<Teachers />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/programs" element={<Programs />} />
-              
-              {/* Protected Student Routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['student']}>
-                    <StudentDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Protected Teacher Routes */}
-              <Route 
-                path="/teacher/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['teacher']}>
-                    <TeacherDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Protected Admin Routes */}
-              <Route 
-                path="/admin/dashboard" 
-                element={
-                  <ProtectedRoute allowedRoles={['admin']}>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                } 
-              />
-              
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/languages" element={<Languages />} />
+                <Route path="/teachers" element={<Teachers />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/programs" element={<Programs />} />
+                
+                {/* Protected Routes */}
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student', 'teacher', 'admin']}>
+                      <Profile />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/quiz/:quizId" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student']}>
+                      <QuizAttempt />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/meeting/:meetingId" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student', 'teacher']}>
+                      <MeetingRoom />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Dashboards */}
+                <Route 
+                  path="/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['student']}>
+                      <StudentDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/teacher/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['teacher']}>
+                      <TeacherDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin/dashboard" 
+                  element={
+                    <ProtectedRoute allowedRoles={['admin']}>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </BrowserRouter>
-            
-            {/* React Query Devtools (development only) */}
+
             {process.env.NODE_ENV === 'development' && (
               <ReactQueryDevtools initialIsOpen={false} />
             )}
@@ -118,30 +135,6 @@ const App = () => (
         </AppStateProvider>
       </AuthProvider>
     </LanguageProvider>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/languages" element={<Languages />} />
-          <Route path="/teachers" element={<Teachers />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/programs" element={<Programs />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/quiz/:quizId" element={<QuizAttempt />} />
-          <Route path="/meeting/:meetingId" element={<MeetingRoom />} />
-          <Route path="/dashboard" element={<StudentDashboard />} />
-          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
   </QueryClientProvider>
 );
 

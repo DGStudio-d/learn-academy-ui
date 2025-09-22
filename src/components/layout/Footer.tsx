@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 
-export function Footer() {
+export function Footer({ isRTL = false }: { isRTL?: boolean }) {
   return (
     <footer className="bg-slate-50 border-t border-border/40">
       <div className="container py-12">
@@ -69,7 +69,7 @@ export function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-4">
+          <div className={`space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             <h4 className="font-semibold">Contact</h4>
             <div className="space-y-3">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -88,11 +88,12 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Footer Bottom */}
         <div className="mt-12 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
             © 2024 Learn Academy. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className={`flex ${isRTL ? 'space-x-reverse space-x-6' : 'space-x-6'} mt-4 md:mt-0`}>
             <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
             </Link>
