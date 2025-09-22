@@ -1,0 +1,266 @@
+{
+  "nav": {
+    "home": "Home",
+    "languages": "Languages",
+    "teachers": "Teachers",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "logout": "Logout"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "submit": "Submit",
+    "search": "Search",
+    "apiOffline": "Backend API is not available. Showing demo content for preview purposes."
+  },
+  "landing": {
+    "hero": {
+      "title": "Master New Languages with Expert Teachers",
+      "subtitle": "Join thousands of students learning languages through interactive lessons, live sessions, and personalized guidance from native speakers.",
+      "cta": "Start Learning Free",
+      "demo": "Watch Demo"
+    },
+    "features": {
+      "title": "Why Choose Learn Academy"
+    },
+    "teachers": {
+      "title": "Meet Our Expert Teachers"
+    }
+  },
+  "languages": {
+    "title": "Choose Your Language",
+    "subtitle": "Explore our comprehensive language programs taught by native speakers and expert instructors.",
+    "cta": "Start Learning Today"
+  },
+  "teachers": {
+    "title": "Meet Our Expert Teachers",
+    "subtitle": "Learn from certified instructors and native speakers who are passionate about helping you succeed."
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back"
+    },
+    "register": {
+      "title": "Create Account"
+    },
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "role": "Role",
+    "language": "Preferred Language"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {{name}}!",
+    "welcomeDefault": "Welcome back!",
+    "continueJourney": "Continue your language learning journey",
+    "quickActions": "Quick Actions",
+    "quickActionsDesc": "Common tasks to help you learn faster"
+  },
+  "student": {
+    "dashboard": {
+      "activeCourses": "Active Courses",
+      "hoursStudied": "Hours Studied",
+      "streakDays": "Streak Days",
+      "certificates": "Certificates",
+      "yourCourses": "Your Courses",
+      "continueWhere": "Continue where you left off",
+      "upcomingSessions": "Upcoming Sessions",
+      "scheduledMeetings": "Your scheduled meetings and classes",
+      "lessonsCompleted": "{{completed}} of {{total}} lessons completed",
+      "nextLesson": "Next: {{lesson}}",
+      "continue": "Continue",
+      "viewAllCourses": "View All Courses",
+      "viewAllSessions": "View All Sessions",
+      "takeQuiz": "Take Quiz",
+      "testKnowledge": "Test your knowledge",
+      "browseCourses": "Browse Courses",
+      "findLanguages": "Find new languages",
+      "viewProgress": "View Progress",
+      "trackAchievements": "Track achievements",
+      "join": "Join",
+      "keepItUp": "Keep it up!",
+      "fromLastMonth": "+{{count}} from last month",
+      "fromLastWeek": "+{{count}} from last week",
+      "completed": "{{language}} {{level}} completed",
+      "with": "with {{teacher}}",
+      "at": "{{date}} at {{time}}",
+      "group": "group",
+      "individual": "individual"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "upcomingMeetings": "Upcoming Meetings",
+      "nextSessions": "Your next teaching sessions",
+      "classProgress": "Class Progress",
+      "studentPerformance": "How your students are doing",
+      "recentActivity": "Recent Activity",
+      "latestUpdates": "Latest updates from your classes",
+      "totalStudents": "Total Students",
+      "activeClasses": "Active Classes",
+      "completedSessions": "Completed Sessions",
+      "averageRating": "Average Rating",
+      "scheduleClass": "Schedule Class",
+      "createQuiz": "Create Quiz",
+      "viewReports": "View Reports",
+      "manageClasses": "Manage Classes",
+      "studentProgress": "Student Progress",
+      "generateReports": "Generate Reports"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "systemMetrics": "System Metrics",
+      "platformHealth": "Platform health and performance",
+      "userActivity": "User Activity",
+      "registrationsTrends": "Recent registrations and trends",
+      "languageDistribution": "Language Distribution",
+      "popularLanguages": "Most popular languages being learned",
+      "recentActivity": "Recent Activity",
+      "latestPlatformUpdates": "Latest platform updates and user actions",
+      "totalUsers": "Total Users",
+      "activeTeachers": "Active Teachers",
+      "activeCourses": "Active Courses",
+      "systemHealth": "System Health",
+      "manageUsers": "Manage Users",
+      "viewReports": "View Reports",
+      "systemSettings": "System Settings",
+      "userManagement": "User Management",
+      "analyticsReports": "Analytics & Reports",
+      "platformConfiguration": "Platform Configuration"
+    }
+  },
+  "guest": {
+    "hero": {
+      "title": "Master Any Language with Learn Academy",
+      "subtitle": "Join thousands of learners worldwide. Interactive lessons, expert teachers, and proven methods to help you speak fluently.",
+      "startLearning": "Start Learning Free",
+      "watchDemo": "Watch Demo"
+    },
+    "popularLanguages": "Popular Languages",
+    "popularLanguagesDesc": "Choose from our most popular language courses taught by native speakers",
+    "tryQuiz": "Try a Sample Quiz",
+    "tryQuizDesc": "Test your Spanish knowledge with our interactive quiz",
+    "whyChoose": "Why Choose Learn Academy?",
+    "expertTeachers": "Expert Teachers",
+    "expertTeachersDesc": "Learn from certified native speakers with years of teaching experience",
+    "interactiveLessons": "Interactive Lessons",
+    "interactiveLessonsDesc": "Engaging multimedia content with quizzes, videos, and real-time practice",
+    "certifiedProgress": "Certified Progress",
+    "certifiedProgressDesc": "Earn certificates and track your progress with detailed analytics",
+    "readyToStart": "Ready to Start Your Language Journey?",
+    "readyToStartDesc": "Join thousands of successful language learners. Start with a free account today.",
+    "createFreeAccount": "Create Free Account",
+    "signIn": "Sign In",
+    "startCourse": "Start Course",
+    "lessons": "lessons",
+    "students": "students",
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "quiz": {
+      "spanishBasics": "Spanish Basics Quiz",
+      "ready": "Ready to test your Spanish knowledge? This quick quiz will help you understand your current level.",
+      "start": "Start Quiz",
+      "complete": "Quiz Complete!",
+      "scored": "You scored {{score}} out of {{total}}",
+      "perfect": "Perfect! You're ready for advanced lessons!",
+      "good": "Great job! You have a good foundation.",
+      "practice": "Keep practicing! Our beginner courses are perfect for you.",
+      "tryAgain": "Try Again",
+      "startLearning": "Start Learning",
+      "exit": "Exit Quiz",
+      "next": "Next",
+      "finish": "Finish",
+      "questionOf": "{{current}} of {{total}}"
+    }
+  },
+  "programs": {
+    "title": "Language Programs",
+    "subtitle": "Discover your perfect language learning path",
+    "filter": {
+      "all": "All Languages",
+      "enrolled": "Enrolled",
+      "available": "Available"
+    },
+    "search": "Search programs...",
+    "level": "Level {{level}}",
+    "duration": "{{duration}} weeks",
+    "enrolled": "Enrolled",
+    "enroll": "Enroll Now",
+    "view": "View Details",
+    "noResults": "No programs found matching your criteria."
+  },
+  "quizzes": {
+    "title": "Practice Quizzes",
+    "subtitle": "Test your knowledge and track your progress",
+    "available": "Available Quizzes",
+    "recent": "Recent Attempts",
+    "takeQuiz": "Take Quiz",
+    "retake": "Retake",
+    "questions": "{{count}} questions",
+    "duration": "{{duration}} minutes",
+    "difficulty": "Difficulty",
+    "lastAttempt": "Last attempt: {{date}}",
+    "bestScore": "Best: {{score}}%",
+    "score": "Score: {{score}}%",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started"
+  },
+  "meetings": {
+    "title": "Language Sessions",
+    "subtitle": "Join live sessions with expert teachers",
+    "upcoming": "Upcoming Sessions",
+    "past": "Past Sessions",
+    "schedule": "Schedule New Session",
+    "join": "Join Session",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "rescheduled": "Rescheduled",
+    "duration": "{{duration}} minutes",
+    "participants": "{{count}} participants",
+    "groupSession": "Group Session",
+    "individualSession": "Individual Session",
+    "noUpcoming": "No upcoming sessions",
+    "scheduleFirst": "Schedule your first session to get started"
+  },
+  "profile": {
+    "title": "Your Profile",
+    "personalInfo": "Personal Information",
+    "statistics": "Learning Statistics",
+    "achievements": "Achievements",
+    "settings": "Settings",
+    "editProfile": "Edit Profile",
+    "saveChanges": "Save Changes",
+    "totalLessons": "Total Lessons Completed",
+    "studyTime": "Total Study Time",
+    "currentStreak": "Current Streak",
+    "longestStreak": "Longest Streak",
+    "coursesCompleted": "Courses Completed",
+    "certificatesEarned": "Certificates Earned",
+    "hours": "hours",
+    "days": "days",
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "weeklyProgress": "Weekly Progress Reports",
+    "sessionReminders": "Session Reminders",
+    "language": "Interface Language",
+    "timezone": "Timezone",
+    "privacy": "Privacy Settings"
+  }
+}

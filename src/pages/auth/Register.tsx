@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Select,
   SelectContent,
@@ -11,7 +13,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { AuthLayout } from '@/components/auth/AuthLayout';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, MessageCircle } from 'lucide-react';
 import { useRegister } from '../../hooks/useAuth';
 import { useRegisterForm } from '../../hooks/useForm';
 import type { RegisterRequest } from '../../types/api';
@@ -28,14 +30,16 @@ const levels = [
   { value: 'advanced', label: 'Advanced' },
 ];
 
-export function Register() {
+function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const registerMutation = useRegister();
 
   const form = useRegisterForm(async (data) => {
     try {
-      const result = await registerMutation.mutateAsync(data);
+      // Set default role to student
+      const registrationData = { ...data, role: 'student' as const };
+      const result = await registerMutation.mutateAsync(registrationData);
 
       // Redirect based on user role
       const roleRedirects = {
@@ -205,32 +209,6 @@ export function Register() {
           </Select>
         </div>
 
-        {/* Role */}
-        <div className="space-y-2">
-          <Label htmlFor="role">I want to</Label>
-          <Select
-            value={form.data.role || 'student'}
-            onValueChange={(value) =>
-              handleSelectChange('role', value as 'student' | 'teacher')
-            }
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select your role" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="student">
-                Learn a language (Student)
-              </SelectItem>
-              <SelectItem value="teacher">
-                Teach a language (Teacher)
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          {form.errors.role && (
-            <p className="text-sm text-destructive">{form.errors.role}</p>
-          )}
-        </div>
-
         {/* Submit */}
         <Button
           type="submit"
@@ -250,6 +228,92 @@ export function Register() {
           </Link>
         </div>
       </form>
+
+      {/* Payment Information Section */}
+      <div className="mt-8 space-y-6">
+        <div className="text-center">
+          <p className="text-sm text-muted-foreground">
+            Fill out the form above to register for one of our language courses. Our team will contact you as
+            soon as possible to confirm registration and arrange lesson times.
+          </p>
+        </div>
+
+        <Tabs defaultValue="register" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="register">Register</TabsTrigger>
+            <TabsTrigger value="payment">Bank Transfer</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="register" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Registration Complete</CardTitle>
+                <CardDescription>
+                  Your registration form has been submitted successfully.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="payment" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>You can pay in advance</CardTitle>
+                <CardDescription>
+                  Via transfer to one of the banks below
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* BARID BANK */}
+                <div className="text-center">
+                  <h3 className="text-lg font-semibold mb-4">Via BARID BANK</h3>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <span className="font-medium">RIB:</span> 350810000000007352205 97
+                    </div>
+                    <div>
+                      <span className="font-medium">IBAN:</span> MA64 350 810{' '}
+                      <span className="text-green-600 font-medium">000000007352205</span> 597
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t pt-6">
+                  <h3 className="text-lg font-semibold mb-4 text-center">Via CIH BANK</h3>
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <span className="font-medium">Account Holder:</span> ZAKARIA AFIF
+                    </div>
+                    <div>
+                      <span className="font-medium">RIB:</span> 230 610{' '}
+                      <span className="text-green-600 font-medium">36784452110016</span> 013
+                    </div>
+                    <div>
+                      <span className="font-medium">IBAN:</span> MA64{' '}
+                      <span className="text-green-600 font-medium">2306 1036 7844 5211 0016 0013</span>
+                    </div>
+                    <div>
+                      <span className="font-medium">Code SWIFT:</span> CIHMMAMX
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t pt-6 text-center">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    After completing the transfer, please contact us via WhatsApp to confirm your registration
+                  </p>
+                  <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                    <MessageCircle className="mr-2 h-4 w-4" />
+                    Contact us via WhatsApp
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </AuthLayout>
   );
 }
+
+export default Register;

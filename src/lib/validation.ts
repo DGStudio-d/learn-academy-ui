@@ -40,11 +40,10 @@ export const registerSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   password_confirmation: z.string(),
-  role: z.enum(['student', 'teacher'], {
-    errorMap: () => ({ message: 'Please select a valid role' })
-  }),
+  role: z.enum(['student', 'teacher']).optional().default('student'),
   phone: phoneSchema,
   preferred_language: z.enum(['ar', 'en', 'es']).optional(),
+  level: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
 }).refine((data) => data.password === data.password_confirmation, {
   message: 'Passwords do not match',
   path: ['password_confirmation'],

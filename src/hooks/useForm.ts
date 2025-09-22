@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { z } from 'zod';
 import { validateForm, validateField, sanitizeInput } from '../lib/validation';
+import { loginSchema, registerSchema, contactFormSchema } from '../lib/validation';
 import { toast } from '@/hooks/use-toast';
 
 // Form state interface
@@ -54,14 +55,12 @@ export function useForm<T extends Record<string, any>>(options: UseFormOptions<T
   // Validate single field
   const validateSingleField = useCallback((name: keyof T, value: any) => {
     try {
-      const fieldSchema = schema?.shape[name as string];
-      if (fieldSchema) {
-        const validation = validateField(fieldSchema, value);
-        return validation;
-      }
-      return { isValid: true };
-    } catch {
-      return { isValid: true };
+      // Create a minimal object with just this field to validate
+      const testData = { [name]: value } as Record<string, any>;
+      const result = validateField(schema, testData);
+      return result;
+    } catch (error) {
+      return { isValid: false, error: 'Invalid value' };
     }
   }, [schema]);
 
@@ -284,7 +283,6 @@ export function useForm<T extends Record<string, any>>(options: UseFormOptions<T
 
 // Specialized hooks for common forms
 export function useLoginForm(onSubmit: (data: any) => Promise<void>) {
-  const { loginSchema } = require('../lib/validation');
   return useForm({
     schema: loginSchema,
     onSubmit,
@@ -293,7 +291,6 @@ export function useLoginForm(onSubmit: (data: any) => Promise<void>) {
 }
 
 export function useRegisterForm(onSubmit: (data: any) => Promise<void>) {
-  const { registerSchema } = require('../lib/validation');
   return useForm({
     schema: registerSchema,
     onSubmit,
@@ -302,7 +299,6 @@ export function useRegisterForm(onSubmit: (data: any) => Promise<void>) {
 }
 
 export function useContactForm(onSubmit: (data: any) => Promise<void>) {
-  const { contactFormSchema } = require('../lib/validation');
   return useForm({
     schema: contactFormSchema,
     onSubmit,

@@ -10,7 +10,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import type { LoginRequest } from '../../types/api';
 
-export function Login() {
+function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<LoginRequest>({
     email: '',
@@ -124,3 +124,5 @@ export function Login() {
     </AuthLayout>
   );
 }
+
+export default Login;

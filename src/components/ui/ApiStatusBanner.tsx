@@ -80,8 +80,8 @@ export function ApiStatusBanner() {
   }
 
   const bannerClass = isApiDown 
-    ? "fixed top-0 left-0 right-0 z-50 rounded-none border-l-0 border-r-0 border-t-0 bg-yellow-50 border-yellow-200 text-yellow-800"
-    : "fixed top-0 left-0 right-0 z-50 rounded-none border-l-0 border-r-0 border-t-0 bg-blue-50 border-blue-200 text-blue-800";
+    ? "fixed top-0 left-0 right-0 z-50 rounded-none border-l-0 border-r-0 border-t-0 bg-yellow-50 border-yellow-200 text-yellow-800 p-4"
+    : "fixed top-0 left-0 right-0 z-50 rounded-none border-l-0 border-r-0 border-t-0 bg-blue-50 border-blue-200 text-blue-800 p-4";
 
   const message = isApiDown 
     ? t('common.apiOffline', 'Backend API is not available. Showing demo content for preview purposes.')
@@ -91,8 +91,8 @@ export function ApiStatusBanner() {
     <Alert className={bannerClass}>
       {isApiDown ? <AlertTriangle className="h-4 w-4" /> : <Info className="h-4 w-4" />}
       <AlertDescription className="flex items-center justify-between w-full">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-          <span>{message}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 flex-1">
+          <span className="font-medium">{message}</span>
           {isDevelopment && apiStatus && (
             <span className="text-xs opacity-75">
               {apiStatus.baseURL} • {new Date(apiStatus.timestamp).toLocaleTimeString()}
@@ -103,10 +103,11 @@ export function ApiStatusBanner() {
           variant="ghost"
           size="sm"
           onClick={() => setIsVisible(false)}
-          className={isApiDown 
-            ? "text-yellow-800 hover:text-yellow-900 hover:bg-yellow-100"
-            : "text-blue-800 hover:text-blue-900 hover:bg-blue-100"
-          }
+          className={`ml-4 flex-shrink-0 ${
+            isApiDown 
+              ? "text-yellow-800 hover:text-yellow-900 hover:bg-yellow-100"
+              : "text-blue-800 hover:text-blue-900 hover:bg-blue-100"
+          }`}
         >
           <X className="h-4 w-4" />
         </Button>

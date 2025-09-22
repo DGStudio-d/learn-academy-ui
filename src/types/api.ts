@@ -100,6 +100,7 @@ export interface RegisterRequest {
   role: 'student' | 'teacher';
   phone?: string;
   preferred_language?: 'ar' | 'en' | 'es';
+  level?: 'beginner' | 'intermediate' | 'advanced';
 }
 
 export interface AuthResponse {

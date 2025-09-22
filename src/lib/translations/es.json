@@ -1,0 +1,266 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "languages": "Idiomas",
+    "teachers": "Profesores",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "dashboard": "Panel",
+    "logout": "Cerrar Sesión"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "view": "Ver",
+    "submit": "Enviar",
+    "search": "Buscar",
+    "apiOffline": "La API del backend no está disponible. Mostrando contenido de demostración para vista previa."
+  },
+  "landing": {
+    "hero": {
+      "title": "Domina Nuevos Idiomas con Profesores Expertos",
+      "subtitle": "Únete a miles de estudiantes que aprenden idiomas a través de lecciones interactivas, sesiones en vivo y orientación personalizada de hablantes nativos.",
+      "cta": "Comenzar a Aprender Gratis",
+      "demo": "Ver Demo"
+    },
+    "features": {
+      "title": "Por Qué Elegir Learn Academy"
+    },
+    "teachers": {
+      "title": "Conoce a Nuestros Profesores Expertos"
+    }
+  },
+  "languages": {
+    "title": "Elige Tu Idioma",
+    "subtitle": "Explora nuestros programas de idiomas integrales impartidos por hablantes nativos e instructores expertos.",
+    "cta": "Comenzar a Aprender Hoy"
+  },
+  "teachers": {
+    "title": "Conoce a Nuestros Profesores Expertos",
+    "subtitle": "Aprende de instructores certificados y hablantes nativos apasionados por ayudarte a tener éxito."
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de Nuevo"
+    },
+    "register": {
+      "title": "Crear Cuenta"
+    },
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "name": "Nombre Completo",
+    "phone": "Número de Teléfono",
+    "role": "Rol",
+    "language": "Idioma Preferido"
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido de nuevo, {{name}}!",
+    "welcomeDefault": "¡Bienvenido de nuevo!",
+    "continueJourney": "Continúa tu viaje de aprendizaje de idiomas",
+    "quickActions": "Acciones Rápidas",
+    "quickActionsDesc": "Tareas comunes para ayudarte a aprender más rápido"
+  },
+  "student": {
+    "dashboard": {
+      "activeCourses": "Cursos Activos",
+      "hoursStudied": "Horas Estudiadas",
+      "streakDays": "Días de Racha",
+      "certificates": "Certificados",
+      "yourCourses": "Tus Cursos",
+      "continueWhere": "Continúa donde lo dejaste",
+      "upcomingSessions": "Sesiones Próximas",
+      "scheduledMeetings": "Tus reuniones y clases programadas",
+      "lessonsCompleted": "{{completed}} de {{total}} lecciones completadas",
+      "nextLesson": "Siguiente: {{lesson}}",
+      "continue": "Continuar",
+      "viewAllCourses": "Ver Todos los Cursos",
+      "viewAllSessions": "Ver Todas las Sesiones",
+      "takeQuiz": "Tomar Quiz",
+      "testKnowledge": "Prueba tu conocimiento",
+      "browseCourses": "Explorar Cursos",
+      "findLanguages": "Encontrar nuevos idiomas",
+      "viewProgress": "Ver Progreso",
+      "trackAchievements": "Seguir logros",
+      "join": "Unirse",
+      "keepItUp": "¡Sigue así!",
+      "fromLastMonth": "+{{count}} del mes pasado",
+      "fromLastWeek": "+{{count}} de la semana pasada",
+      "completed": "{{language}} {{level}} completado",
+      "with": "con {{teacher}}",
+      "at": "{{date}} a las {{time}}",
+      "group": "grupo",
+      "individual": "individual"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "upcomingMeetings": "Reuniones Próximas",
+      "nextSessions": "Tus próximas sesiones de enseñanza",
+      "classProgress": "Progreso de la Clase",
+      "studentPerformance": "Cómo están rindiendo tus estudiantes",
+      "recentActivity": "Actividad Reciente",
+      "latestUpdates": "Últimas actualizaciones de tus clases",
+      "totalStudents": "Total de Estudiantes",
+      "activeClasses": "Clases Activas",
+      "completedSessions": "Sesiones Completadas",
+      "averageRating": "Calificación Promedio",
+      "scheduleClass": "Programar Clase",
+      "createQuiz": "Crear Quiz",
+      "viewReports": "Ver Reportes",
+      "manageClasses": "Gestionar Clases",
+      "studentProgress": "Progreso del Estudiante",
+      "generateReports": "Generar Reportes"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "systemMetrics": "Métricas del Sistema",
+      "platformHealth": "Salud y rendimiento de la plataforma",
+      "userActivity": "Actividad del Usuario",
+      "registrationsTrends": "Registros recientes y tendencias",
+      "languageDistribution": "Distribución de Idiomas",
+      "popularLanguages": "Idiomas más populares que se están aprendiendo",
+      "recentActivity": "Actividad Reciente",
+      "latestPlatformUpdates": "Últimas actualizaciones de la plataforma y acciones del usuario",
+      "totalUsers": "Total de Usuarios",
+      "activeTeachers": "Profesores Activos",
+      "activeCourses": "Cursos Activos",
+      "systemHealth": "Salud del Sistema",
+      "manageUsers": "Gestionar Usuarios",
+      "viewReports": "Ver Reportes",
+      "systemSettings": "Configuración del Sistema",
+      "userManagement": "Gestión de Usuarios",
+      "analyticsReports": "Análisis y Reportes",
+      "platformConfiguration": "Configuración de la Plataforma"
+    }
+  },
+  "guest": {
+    "hero": {
+      "title": "Domina Cualquier Idioma con Learn Academy",
+      "subtitle": "Únete a miles de estudiantes en todo el mundo. Lecciones interactivas, profesores expertos y métodos probados para ayudarte a hablar con fluidez.",
+      "startLearning": "Comenzar a Aprender Gratis",
+      "watchDemo": "Ver Demo"
+    },
+    "popularLanguages": "Idiomas Populares",
+    "popularLanguagesDesc": "Elige entre nuestros cursos de idiomas más populares impartidos por hablantes nativos",
+    "tryQuiz": "Prueba un Quiz de Muestra",
+    "tryQuizDesc": "Prueba tu conocimiento de español con nuestro quiz interactivo",
+    "whyChoose": "¿Por Qué Elegir Learn Academy?",
+    "expertTeachers": "Profesores Expertos",
+    "expertTeachersDesc": "Aprende de hablantes nativos certificados con años de experiencia en enseñanza",
+    "interactiveLessons": "Lecciones Interactivas",
+    "interactiveLessonsDesc": "Contenido multimedia atractivo con cuestionarios, videos y práctica en tiempo real",
+    "certifiedProgress": "Progreso Certificado",
+    "certifiedProgressDesc": "Gana certificados y rastrea tu progreso con análisis detallados",
+    "readyToStart": "¿Listo para Comenzar tu Viaje de Idiomas?",
+    "readyToStartDesc": "Únete a miles de estudiantes de idiomas exitosos. Comienza con una cuenta gratuita hoy.",
+    "createFreeAccount": "Crear Cuenta Gratuita",
+    "signIn": "Iniciar Sesión",
+    "startCourse": "Comenzar Curso",
+    "lessons": "lecciones",
+    "students": "estudiantes",
+    "difficulty": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "quiz": {
+      "spanishBasics": "Fundamentos de Español",
+      "ready": "¿Listo para probar tu conocimiento de español? Este quiz rápido te ayudará a entender tu nivel actual.",
+      "start": "Comenzar Quiz",
+      "complete": "¡Quiz Completado!",
+      "scored": "Obtuviste {{score}} de {{total}}",
+      "perfect": "¡Perfecto! ¡Estás listo para lecciones avanzadas!",
+      "good": "¡Buen trabajo! Tienes una buena base.",
+      "practice": "¡Sigue practicando! Nuestros cursos para principiantes son perfectos para ti.",
+      "tryAgain": "Intentar de Nuevo",
+      "startLearning": "Comenzar a Aprender",
+      "exit": "Salir del Quiz",
+      "next": "Siguiente",
+      "finish": "Finalizar",
+      "questionOf": "{{current}} de {{total}}"
+    }
+  },
+  "programs": {
+    "title": "Programas de Idiomas",
+    "subtitle": "Descubre tu camino perfecto de aprendizaje de idiomas",
+    "filter": {
+      "all": "Todos los Idiomas",
+      "enrolled": "Inscrito",
+      "available": "Disponible"
+    },
+    "search": "Buscar programas...",
+    "level": "Nivel {{level}}",
+    "duration": "{{duration}} semanas",
+    "enrolled": "Inscrito",
+    "enroll": "Inscribirse Ahora",
+    "view": "Ver Detalles",
+    "noResults": "No se encontraron programas que coincidan con tus criterios."
+  },
+  "quizzes": {
+    "title": "Cuestionarios de Práctica",
+    "subtitle": "Prueba tu conocimiento y rastrea tu progreso",
+    "available": "Cuestionarios Disponibles",
+    "recent": "Intentos Recientes",
+    "takeQuiz": "Tomar Cuestionario",
+    "retake": "Reintentar",
+    "questions": "{{count}} preguntas",
+    "duration": "{{duration}} minutos",
+    "difficulty": "Dificultad",
+    "lastAttempt": "Último intento: {{date}}",
+    "bestScore": "Mejor: {{score}}%",
+    "score": "Puntuación: {{score}}%",
+    "completed": "Completado",
+    "inProgress": "En Progreso",
+    "notStarted": "No Iniciado"
+  },
+  "meetings": {
+    "title": "Sesiones de Idiomas",
+    "subtitle": "Únete a sesiones en vivo con profesores expertos",
+    "upcoming": "Sesiones Próximas",
+    "past": "Sesiones Pasadas",
+    "schedule": "Programar Nueva Sesión",
+    "join": "Unirse a la Sesión",
+    "completed": "Completado",
+    "cancelled": "Cancelado",
+    "rescheduled": "Reprogramado",
+    "duration": "{{duration}} minutos",
+    "participants": "{{count}} participantes",
+    "groupSession": "Sesión Grupal",
+    "individualSession": "Sesión Individual",
+    "noUpcoming": "No hay sesiones próximas",
+    "scheduleFirst": "Programa tu primera sesión para comenzar"
+  },
+  "profile": {
+    "title": "Tu Perfil",
+    "personalInfo": "Información Personal",
+    "statistics": "Estadísticas de Aprendizaje",
+    "achievements": "Logros",
+    "settings": "Configuración",
+    "editProfile": "Editar Perfil",
+    "saveChanges": "Guardar Cambios",
+    "totalLessons": "Total de Lecciones Completadas",
+    "studyTime": "Tiempo Total de Estudio",
+    "currentStreak": "Racha Actual",
+    "longestStreak": "Racha Más Larga",
+    "coursesCompleted": "Cursos Completados",
+    "certificatesEarned": "Certificados Obtenidos",
+    "hours": "horas",
+    "days": "días",
+    "notifications": "Notificaciones",
+    "emailNotifications": "Notificaciones por Email",
+    "weeklyProgress": "Reportes de Progreso Semanales",
+    "sessionReminders": "Recordatorios de Sesiones",
+    "language": "Idioma de la Interfaz",
+    "timezone": "Zona Horaria",
+    "privacy": "Configuración de Privacidad"
+  }
+}

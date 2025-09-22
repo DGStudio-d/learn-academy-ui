@@ -1,0 +1,266 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "languages": "اللغات",
+    "teachers": "المعلمون",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "dashboard": "لوحة التحكم",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض",
+    "submit": "إرسال",
+    "search": "بحث",
+    "apiOffline": "خادم API غير متاح. يتم عرض المحتوى التجريبي للمعاينة."
+  },
+  "landing": {
+    "hero": {
+      "title": "اتقن لغات جديدة مع معلمين خبراء",
+      "subtitle": "انضم إلى آلاف الطلاب الذين يتعلمون اللغات من خلال دروس تفاعلية وجلسات مباشرة وإرشاد شخصي من متحدثين أصليين.",
+      "cta": "ابدأ التعلم مجاناً",
+      "demo": "شاهد العرض التوضيحي"
+    },
+    "features": {
+      "title": "لماذا تختار أكاديمية التعلم"
+    },
+    "teachers": {
+      "title": "تعرف على معلمينا الخبراء"
+    }
+  },
+  "languages": {
+    "title": "اختر لغتك",
+    "subtitle": "استكشف برامجنا اللغوية الشاملة التي يدرسها متحدثون أصليون ومعلمون خبراء.",
+    "cta": "ابدأ التعلم اليوم"
+  },
+  "teachers": {
+    "title": "تعرف على معلمينا الخبراء",
+    "subtitle": "تعلم من معلمين معتمدين ومتحدثين أصليين متحمسين لمساعدتك على النجاح."
+  },
+  "auth": {
+    "login": {
+      "title": "أهلاً بعودتك"
+    },
+    "register": {
+      "title": "إنشاء حساب"
+    },
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "الاسم الكامل",
+    "phone": "رقم الهاتف",
+    "role": "الدور",
+    "language": "اللغة المفضلة"
+  },
+  "dashboard": {
+    "welcome": "أهلاً بعودتك، {{name}}!",
+    "welcomeDefault": "أهلاً بعودتك!",
+    "continueJourney": "تابع رحلة تعلم اللغة",
+    "quickActions": "إجراءات سريعة",
+    "quickActionsDesc": "مهام شائعة لمساعدتك على التعلم بشكل أسرع"
+  },
+  "student": {
+    "dashboard": {
+      "activeCourses": "الدورات النشطة",
+      "hoursStudied": "ساعات الدراسة",
+      "streakDays": "أيام التتابع",
+      "certificates": "الشهادات",
+      "yourCourses": "دوراتك",
+      "continueWhere": "تابع من حيث توقفت",
+      "upcomingSessions": "الجلسات القادمة",
+      "scheduledMeetings": "اجتماعاتك وفصولك المجدولة",
+      "lessonsCompleted": "{{completed}} من {{total}} دروس مكتملة",
+      "nextLesson": "التالي: {{lesson}}",
+      "continue": "متابعة",
+      "viewAllCourses": "عرض جميع الدورات",
+      "viewAllSessions": "عرض جميع الجلسات",
+      "takeQuiz": "خذ اختبار",
+      "testKnowledge": "اختبر معرفتك",
+      "browseCourses": "تصفح الدورات",
+      "findLanguages": "اكتشف لغات جديدة",
+      "viewProgress": "عرض التقدم",
+      "trackAchievements": "تتبع الإنجازات",
+      "join": "انضم",
+      "keepItUp": "استمر!",
+      "fromLastMonth": "+{{count}} من الشهر الماضي",
+      "fromLastWeek": "+{{count}} من الأسبوع الماضي",
+      "completed": "{{language}} {{level}} مكتمل",
+      "with": "مع {{teacher}}",
+      "at": "{{date}} في {{time}}",
+      "group": "مجموعة",
+      "individual": "فردي"
+    }
+  },
+  "teacher": {
+    "dashboard": {
+      "upcomingMeetings": "الاجتماعات القادمة",
+      "nextSessions": "جلسات التدريس القادمة",
+      "classProgress": "تقدم الصف",
+      "studentPerformance": "كيف يؤدي طلابك",
+      "recentActivity": "النشاط الحديث",
+      "latestUpdates": "آخر التحديثات من صفوفك",
+      "totalStudents": "إجمالي الطلاب",
+      "activeClasses": "الصفوف النشطة",
+      "completedSessions": "الجلسات المكتملة",
+      "averageRating": "متوسط التقييم",
+      "scheduleClass": "جدولة صف",
+      "createQuiz": "إنشاء اختبار",
+      "viewReports": "عرض التقارير",
+      "manageClasses": "إدارة الصفوف",
+      "studentProgress": "تقدم الطلاب",
+      "generateReports": "إنشاء التقارير"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "systemMetrics": "مقاييس النظام",
+      "platformHealth": "صحة وأداء المنصة",
+      "userActivity": "نشاط المستخدمين",
+      "registrationsTrends": "التسجيلات والاتجاهات الحديثة",
+      "languageDistribution": "توزيع اللغات",
+      "popularLanguages": "اللغات الأكثر شعبية في التعلم",
+      "recentActivity": "النشاط الحديث",
+      "latestPlatformUpdates": "آخر تحديثات المنصة وأعمال المستخدمين",
+      "totalUsers": "إجمالي المستخدمين",
+      "activeTeachers": "المعلمين النشطين",
+      "activeCourses": "الدورات النشطة",
+      "systemHealth": "صحة النظام",
+      "manageUsers": "إدارة المستخدمين",
+      "viewReports": "عرض التقارير",
+      "systemSettings": "إعدادات النظام",
+      "userManagement": "إدارة المستخدمين",
+      "analyticsReports": "التحليلات والتقارير",
+      "platformConfiguration": "تكوين المنصة"
+    }
+  },
+  "guest": {
+    "hero": {
+      "title": "اتقن أي لغة مع أكاديمية التعلم",
+      "subtitle": "انضم إلى آلاف المتعلمين حول العالم. دروس تفاعلية ومعلمين خبراء وطرق مثبتة لمساعدتك على التحدث بطلاقة.",
+      "startLearning": "ابدأ التعلم مجاناً",
+      "watchDemo": "شاهد العرض التوضيحي"
+    },
+    "popularLanguages": "اللغات الشائعة",
+    "popularLanguagesDesc": "اختر من أشهر دورات اللغات التي يدرسها متحدثون أصليون",
+    "tryQuiz": "جرب اختبار تجريبي",
+    "tryQuizDesc": "اختبر معرفتك بالإسبانية مع اختبارنا التفاعلي",
+    "whyChoose": "لماذا تختار أكاديمية التعلم؟",
+    "expertTeachers": "معلمون خبراء",
+    "expertTeachersDesc": "تعلم من متحدثين أصليين معتمدين مع سنوات من الخبرة في التدريس",
+    "interactiveLessons": "دروس تفاعلية",
+    "interactiveLessonsDesc": "محتوى وسائط متعددة جذاب مع اختبارات وفيديوهات وممارسة في الوقت الفعلي",
+    "certifiedProgress": "تقدم معتمد",
+    "certifiedProgressDesc": "احصل على شهادات وتتبع تقدمك مع تحليلات مفصلة",
+    "readyToStart": "هل أنت مستعد لبدء رحلة تعلم اللغة؟",
+    "readyToStartDesc": "انضم إلى آلاف متعلمي اللغات الناجحين. ابدأ بحساب مجاني اليوم.",
+    "createFreeAccount": "إنشاء حساب مجاني",
+    "signIn": "تسجيل الدخول",
+    "startCourse": "بدء الدورة",
+    "lessons": "دروس",
+    "students": "طلاب",
+    "difficulty": {
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم"
+    },
+    "quiz": {
+      "spanishBasics": "أساسيات الإسبانية",
+      "ready": "هل أنت مستعد لاختبار معرفتك بالإسبانية؟ هذا الاختبار السريع سيساعدك على فهم مستواك الحالي.",
+      "start": "بدء الاختبار",
+      "complete": "الاختبار مكتمل!",
+      "scored": "حصلت على {{score}} من {{total}}",
+      "perfect": "ممتاز! أنت مستعد للدروس المتقدمة!",
+      "good": "عمل رائع! لديك أساس جيد.",
+      "practice": "استمر في الممارسة! دوراتنا للمبتدئين مثالية لك.",
+      "tryAgain": "حاول مرة أخرى",
+      "startLearning": "ابدأ التعلم",
+      "exit": "إنهاء الاختبار",
+      "next": "التالي",
+      "finish": "إنهاء",
+      "questionOf": "{{current}} من {{total}}"
+    }
+  },
+  "programs": {
+    "title": "برامج اللغات",
+    "subtitle": "اكتشف مسار تعلم اللغة المثالي لك",
+    "filter": {
+      "all": "جميع اللغات",
+      "enrolled": "مسجل",
+      "available": "متاح"
+    },
+    "search": "البحث في البرامج...",
+    "level": "المستوى {{level}}",
+    "duration": "{{duration}} أسابيع",
+    "enrolled": "مسجل",
+    "enroll": "التسجيل الآن",
+    "view": "عرض التفاصيل",
+    "noResults": "لم يتم العثور على برامج تطابق معاييرك."
+  },
+  "quizzes": {
+    "title": "اختبارات الممارسة",
+    "subtitle": "اختبر معرفتك وتتبع تقدمك",
+    "available": "الاختبارات المتاحة",
+    "recent": "المحاولات الحديثة",
+    "takeQuiz": "خذ الاختبار",
+    "retake": "إعادة المحاولة",
+    "questions": "{{count}} أسئلة",
+    "duration": "{{duration}} دقائق",
+    "difficulty": "الصعوبة",
+    "lastAttempt": "آخر محاولة: {{date}}",
+    "bestScore": "الأفضل: {{score}}%",
+    "score": "النتيجة: {{score}}%",
+    "completed": "مكتمل",
+    "inProgress": "قيد التقدم",
+    "notStarted": "لم يبدأ"
+  },
+  "meetings": {
+    "title": "جلسات اللغة",
+    "subtitle": "انضم إلى جلسات مباشرة مع معلمين خبراء",
+    "upcoming": "الجلسات القادمة",
+    "past": "الجلسات السابقة",
+    "schedule": "جدولة جلسة جديدة",
+    "join": "انضم إلى الجلسة",
+    "completed": "مكتمل",
+    "cancelled": "ملغي",
+    "rescheduled": "معاد الجدولة",
+    "duration": "{{duration}} دقائق",
+    "participants": "{{count}} مشاركين",
+    "groupSession": "جلسة مجموعة",
+    "individualSession": "جلسة فردية",
+    "noUpcoming": "لا توجد جلسات قادمة",
+    "scheduleFirst": "جدول جلستك الأولى للبدء"
+  },
+  "profile": {
+    "title": "ملفك الشخصي",
+    "personalInfo": "المعلومات الشخصية",
+    "statistics": "إحصائيات التعلم",
+    "achievements": "الإنجازات",
+    "settings": "الإعدادات",
+    "editProfile": "تعديل الملف الشخصي",
+    "saveChanges": "حفظ التغييرات",
+    "totalLessons": "إجمالي الدروس المكتملة",
+    "studyTime": "إجمالي وقت الدراسة",
+    "currentStreak": "التتابع الحالي",
+    "longestStreak": "أطول تتابع",
+    "coursesCompleted": "الدورات المكتملة",
+    "certificatesEarned": "الشهادات المكتسبة",
+    "hours": "ساعات",
+    "days": "أيام",
+    "notifications": "الإشعارات",
+    "emailNotifications": "إشعارات البريد الإلكتروني",
+    "weeklyProgress": "تقارير التقدم الأسبوعية",
+    "sessionReminders": "تذكيرات الجلسات",
+    "language": "لغة الواجهة",
+    "timezone": "المنطقة الزمنية",
+    "privacy": "إعدادات الخصوصية"
+  }
+}

@@ -1,37 +1,37 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { ProtectedRoute } from './components/auth/ProtectedRoute'
-import { AppLayout } from './components/layout/AppLayout'
-import { LoadingSpinner } from './components/common/LoadingSpinner'
-import { ErrorBoundary } from './components/common/ErrorBoundary'
+import { ProtectedRoute } from '../components/ProtectedRoute'
+import { AppLayout } from '../components/layout/AppLayout'
+import { LoadingSpinner } from '../components/common/LoadingSpinner'
+import { ErrorBoundary } from '../components/common/ErrorBoundary'
 
 // Lazy load pages for better performance
-const Login = lazy(() => import('./pages/auth/Login'))
-const Register = lazy(() => import('./pages/auth/Register').then(module => ({ default: module.Register })))
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const GuestLanding = lazy(() => import('./pages/GuestLanding'))
+const Login = lazy(() => import('../pages/auth/Login'))
+const Register = lazy(() => import('../pages/auth/Register'))
+const Dashboard = lazy(() => import('../pages/Dashboard'))
+const GuestLanding = lazy(() => import('../pages/GuestLanding'))
 
 // Student pages
-const StudentDashboard = lazy(() => import('./pages/student/Dashboard'))
-const StudentPrograms = lazy(() => import('./pages/student/Programs'))
-const StudentQuizzes = lazy(() => import('./pages/student/Quizzes'))
-const StudentMeetings = lazy(() => import('./pages/student/Meetings'))
-const StudentProfile = lazy(() => import('./pages/student/Profile'))
+const StudentDashboard = lazy(() => import('../pages/student/Dashboard'))
+const StudentPrograms = lazy(() => import('../pages/student/Programs'))
+const StudentQuizzes = lazy(() => import('../pages/student/Quizzes'))
+const StudentMeetings = lazy(() => import('../pages/student/Meetings'))
+const StudentProfile = lazy(() => import('../pages/student/Profile'))
 
 // Teacher pages  
-const TeacherDashboard = lazy(() => import('./pages/teacher/Dashboard'))
-const TeacherProfile = lazy(() => import('./pages/teacher/Profile'))
-const TeacherQuizzes = lazy(() => import('./pages/teacher/Quizzes'))
-const TeacherResults = lazy(() => import('./pages/teacher/Results'))
-const TeacherMeetings = lazy(() => import('./pages/teacher/Meetings'))
+const TeacherDashboard = lazy(() => import('../pages/teacher/Dashboard'))
+const TeacherProfile = lazy(() => import('../pages/teacher/Profile'))
+const TeacherQuizzes = lazy(() => import('../pages/teacher/Quizzes'))
+const TeacherResults = lazy(() => import('../pages/teacher/Results'))
+const TeacherMeetings = lazy(() => import('../pages/teacher/Meetings'))
 
 // Admin pages
-const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'))
-const AdminLanguages = lazy(() => import('./pages/admin/Languages'))
-const AdminPrograms = lazy(() => import('./pages/admin/Programs'))
-const AdminTeachers = lazy(() => import('./pages/admin/Teachers'))
-const AdminSettings = lazy(() => import('./pages/admin/Settings'))
-const AdminReports = lazy(() => import('./pages/admin/Reports'))
+const AdminDashboard = lazy(() => import('../pages/admin/Dashboard'))
+const AdminLanguages = lazy(() => import('../pages/admin/Languages'))
+const AdminPrograms = lazy(() => import('../pages/admin/Programs'))
+const AdminTeachers = lazy(() => import('../pages/admin/Teachers'))
+const AdminSettings = lazy(() => import('../pages/admin/Settings'))
+const AdminReports = lazy(() => import('../pages/admin/Reports'))
 
 // Page wrapper with error boundary and loading
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
