@@ -24,10 +24,16 @@ export const guestService = {
       
       throw new Error(response.data.message || 'Failed to get guest settings');
     } catch (error) {
-      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
-        customMessage: 'Failed to get guest settings'
-      });
-      throw error;
+      // Return fallback settings instead of throwing error
+      console.warn('Guest settings API not available, using fallback');
+      return {
+        guest_can_access_languages: true,
+        guest_can_access_teachers: true,  
+        guest_can_access_programs: true,
+        guest_can_access_quizzes: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      } as AdminSettings;
     }
   },
 

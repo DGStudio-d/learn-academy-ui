@@ -12,14 +12,21 @@ export interface ApiResponse<T = any> {
 
 export interface PaginatedResponse<T = any> {
   success: boolean;
-  data: {
-    data: T[];
-    current_page: number;
-    per_page: number;
-    total: number;
-    last_page: number;
-    from: number | null;
-    to: number | null;
+  data: T[];
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  from: number | null;
+  to: number | null;
+  first_page_url: string;
+  last_page_url: string;
+  next_page_url: string | null;
+  prev_page_url: string | null;
+  meta?: {
+    timestamp?: string;
+    request_id?: string;
+    version?: string;
     first_page_url: string;
     last_page_url: string;
     next_page_url: string | null;
@@ -114,6 +121,7 @@ export interface AuthResponse {
 export interface Program {
   id: number;
   name: string;
+  title?: string; // Add alias for backwards compatibility
   description?: string;
   language_id: number;
   language?: Language;
@@ -411,6 +419,19 @@ export interface SystemStatistics {
     requests_per_minute: number;
     error_rate: number;
   };
+  active_sessions?: number;
+  daily_requests?: number;
+  daily_logins?: number;
+  daily_quiz_attempts?: number;
+  daily_errors?: number;
+  active_users?: number;
+  online_users?: number;
+  peak_concurrent?: number;
+  avg_session_time?: number;
+  total_queries?: number;
+  slow_queries?: number;
+  database_size?: number;
+  db_connections?: number;
 }
 
 // Enhanced program type with details
@@ -510,21 +531,10 @@ export interface Notification {
   created_at: string;
   updated_at: string;
 }
-// A
-dditional system statistics
+
+// Additional system statistics (merged into main interface)
 export interface SystemStatisticsExtended extends SystemStatistics {
-  daily_requests?: number;
-  daily_logins?: number;
-  daily_quiz_attempts?: number;
-  daily_errors?: number;
-  active_users?: number;
-  online_users?: number;
-  peak_concurrent?: number;
-  avg_session_time?: number;
-  total_queries?: number;
-  slow_queries?: number;
-  database_size?: number;
-  db_connections?: number;
+  // Additional properties if needed in the future
 }
 
 // Enhanced Question type for advanced quiz creation
@@ -698,8 +708,9 @@ export interface StudentProgressExportFilters {
   program_id?: number;
   student_ids?: number[];
   format?: 'csv' | 'excel';
-}//
- Analytics and System Health Types
+}
+
+// Analytics and System Health Types
 export interface SystemHealth {
   server_status: 'healthy' | 'warning' | 'critical' | 'offline';
   database_status: 'healthy' | 'warning' | 'critical' | 'offline';
