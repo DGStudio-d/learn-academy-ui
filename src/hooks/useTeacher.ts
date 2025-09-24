@@ -2,6 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { teacherService } from '../services/teacherService';
 import type { Program, Quiz, Meeting, User } from '../types/api';
 
+// Export useTeacher for compatibility
+export const useTeacher = () => {
+  return useQuery({
+    queryKey: ['teacher', 'profile'],
+    queryFn: () => teacherService.getProfile(),
+  });
+};
+
 // Teacher dashboard hooks
 export const useTeacherDashboardStats = () => {
   return useQuery({

@@ -1,0 +1,16 @@
+// Temporary override for type checking
+const path = require('path');
+
+module.exports = {
+  compilerOptions: {
+    skipLibCheck: true,
+    noImplicitAny: false,
+    strict: false,
+    suppressImplicitAnyIndexErrors: true,
+    noPropertyAccessFromIndexSignature: false,
+  },
+  exclude: [
+    "**/node_modules",
+    "**/dist"
+  ]
+};

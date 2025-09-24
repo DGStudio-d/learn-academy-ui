@@ -16,6 +16,23 @@ import type {
   SystemLog
 } from '../types/api';
 
+// Export useAdmin for compatibility
+export const useAdmin = () => {
+  return useQuery({
+    queryKey: ['admin', 'settings'],
+    queryFn: () => adminService.getAdminSettings(),
+  });
+};
+
+// Export useSystemMetrics for compatibility
+export const useSystemMetrics = () => {
+  return useQuery({
+    queryKey: ['admin', 'system-metrics'],
+    queryFn: () => adminService.getSystemStatistics(),
+    refetchInterval: 30000,
+  });
+};
+
 // Admin dashboard hooks
 export const useAdminDashboardStats = () => {
   return useQuery({
