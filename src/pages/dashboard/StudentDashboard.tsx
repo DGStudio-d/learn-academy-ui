@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   BookOpen, 
   Calendar, 
@@ -10,230 +11,285 @@ import {
   ExternalLink,
   Play,
   CheckCircle,
-  Loader2
+  Loader2,
+  Award,
+  Target,
+  TrendingUp,
+  Star,
+  Users,
+  Video,
+  FileText,
+  BarChart3
 } from 'lucide-react';
 import { 
-  useStudentDashboardStats,
-  useEnrolledPrograms,
-  useStudentMeetings,
-  useStudentQuizAttempts
+  useStudentLearningDashboard,
+  useStudentProgressSummary,
+  useUpcomingMeetings,
+  useAllQuizAttempts
 } from '../../hooks/useStudent';
 import { useAuth } from '../../contexts/AuthContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { ProgramProgressCard } from '../../components/student/ProgramProgressCard';
+import { QuizTakingInterface } from '../../components/student/QuizTakingInterface';
+import { MeetingAccessInterface } from '../../components/student/MeetingAccessInterface';
+import { AchievementSystem } from '../../components/student/AchievementSystem';
+import { ProgressVisualization } from '../../components/student/ProgressVisualization';
 
 export function StudentDashboard() {
   const { user } = useAuth();
-  const { data: stats, isLoading: statsLoading } = useStudentDashboardStats();
-  const { data: programsData, isLoading: programsLoading } = useEnrolledPrograms();
-  const { data: meetingsData, isLoading: meetingsLoading } = useStudentMeetings();
-  const { data: attemptsData, isLoading: attemptsLoading } = useStudentQuizAttempts();
+  const {
+    stats,
+    progress,
+    enrollments,
+    upcomingMeetings,
+    recentAttempts,
+    isLoading,
+    isLoadingMeetings,
+    isLoadingAttempts,
+    error,
+    refetchAll
+  } = useStudentLearningDashboard();
   
-  if (statsLoading) {
+  const { data: progressSummary } = useStudentProgressSummary();
+  
+  if (isLoading) {
     return (
-      <div className="container py-8 flex items-center justify-center min-h-[400px]">
-        <div className="flex items-center space-x-2">
-          <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Loading dashboard...</span>
+      <DashboardLayout userRole="student">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="flex items-center space-x-2">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span>Loading dashboard...</span>
+          </div>
         </div>
-      </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout userRole="student">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center space-y-4">
+            <div className="text-red-500">Failed to load dashboard data</div>
+            <Button onClick={refetchAll}>Try Again</Button>
+          </div>
+        </div>
+      </DashboardLayout>
     );
   }
   return (
     <DashboardLayout userRole="student">
-      <div className="space-y-8">
-        {/* Welcome Section */}
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Welcome back, {user?.name || 'Student'}!</h1>
-          <p className="text-muted-foreground">Continue your language learning journey</p>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <BookOpen className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="text-2xl font-bold">
-                    {programsData?.data?.data?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Active Programs</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="text-2xl font-bold">
-                    {meetingsData?.data?.data?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">This Week</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <Trophy className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="text-2xl font-bold">
-                    {stats?.recent_quiz_attempts ? `${Math.round((stats.recent_quiz_attempts / 10) * 100)}%` : '0%'}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Avg. Score</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-2">
-                <Clock className="h-5 w-5 text-primary" />
-                <div>
-                  <div className="text-2xl font-bold">
-                    {attemptsData?.data?.data?.length || 0}
-                  </div>
-                  <div className="text-sm text-muted-foreground">Quiz Attempts</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* My Programs */}
-          <Card>
-            <CardHeader>
-              <CardTitle>My Programs</CardTitle>
-              <CardDescription>Track your progress in enrolled programs</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {programsLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin" />
-                </div>
-              ) : programsData?.data?.data && programsData.data.data.length > 0 ? (
-                programsData.data.data.map((program) => (
-                  <div key={program.id} className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold">{program.name}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {program.language?.name || 'Language'} • {program.teacher?.name || 'Teacher'}
-                        </p>
-                      </div>
-                      <Badge variant="outline">Active</Badge>
-                    </div>
-                    <Progress value={75} className="h-2" />
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Enrolled: {new Date(program.created_at).toLocaleDateString()}</span>
-                      <span>Status: Active</span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No enrolled programs yet</p>
-                  <p className="text-sm">Browse available programs to get started</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Upcoming Meetings */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Upcoming Meetings</CardTitle>
-              <CardDescription>Join your scheduled live sessions</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {meetingsLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin" />
-                </div>
-              ) : meetingsData?.data?.data && meetingsData.data.data.length > 0 ? (
-                meetingsData.data.data.slice(0, 3).map((meeting) => (
-                  <div key={meeting.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="space-y-1">
-                      <h3 className="font-semibold">{meeting.title}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        with {meeting.teacher?.name || 'Teacher'}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(meeting.scheduled_at).toLocaleString()} • {meeting.duration || 60} min
-                      </p>
-                    </div>
-                    <Button size="sm" className="flex items-center space-x-2">
-                      <ExternalLink className="h-4 w-4" />
-                      <span>Join</span>
-                    </Button>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No upcoming meetings</p>
-                  <p className="text-sm">Check back later for scheduled sessions</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Quizzes */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Quiz Results</CardTitle>
-            <CardDescription>Review your latest quiz performance</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {attemptsLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="h-6 w-6 animate-spin" />
-                </div>
-              ) : attemptsData?.data?.data && attemptsData.data.data.length > 0 ? (
-                attemptsData.data.data.slice(0, 5).map((attempt) => (
-                  <div key={attempt.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-primary">
-                        <CheckCircle className="h-5 w-5 text-primary-foreground" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold">{attempt.quiz?.title || 'Quiz'}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          Completed on {new Date(attempt.completed_at).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">
-                        {attempt.score}%
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {attempt.correct_answers}/{attempt.total_questions} correct
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Trophy className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No quiz attempts yet</p>
-                  <p className="text-sm">Take your first quiz to see results here</p>
-                </div>
-              )}
+      <div className="space-y-8" data-testid="student-dashboard">
+        {/* Welcome Section with Progress Overview */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">Welcome back, {user?.name || 'Student'}!</h1>
+              <p className="text-muted-foreground">Continue your language learning journey</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-primary">
+                {progressSummary?.overall_progress?.completion_percentage || 0}%
+              </div>
+              <div className="text-sm text-muted-foreground">Overall Progress</div>
+            </div>
+          </div>
+          
+          {/* Progress Visualization */}
+          <ProgressVisualization progressData={progressSummary} />
+        </div>
+
+        {/* Enhanced Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6" data-testid="dashboard-stats">
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-primary/10 rounded-lg">
+                    <BookOpen className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">
+                      {enrollments?.data?.data?.length || 0}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Active Programs</div>
+                  </div>
+                </div>
+                <TrendingUp className="h-4 w-4 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-blue-500/10 rounded-lg">
+                    <Calendar className="h-5 w-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">
+                      {upcomingMeetings?.data?.data?.length || 0}
+                    </div>
+                    <div className="text-sm text-muted-foreground">This Week</div>
+                  </div>
+                </div>
+                <Video className="h-4 w-4 text-blue-500" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-yellow-500/10 rounded-lg">
+                    <Trophy className="h-5 w-5 text-yellow-500" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">
+                      {progressSummary?.overall_progress?.average_quiz_score || 0}%
+                    </div>
+                    <div className="text-sm text-muted-foreground">Avg. Score</div>
+                  </div>
+                </div>
+                <Target className="h-4 w-4 text-yellow-500" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-green-500/10 rounded-lg">
+                    <Award className="h-5 w-5 text-green-500" />
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold">
+                      {progressSummary?.achievements?.length || 0}
+                    </div>
+                    <div className="text-sm text-muted-foreground">Achievements</div>
+                  </div>
+                </div>
+                <Star className="h-4 w-4 text-green-500" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="overview" className="flex items-center space-x-2">
+              <BarChart3 className="h-4 w-4" />
+              <span>Overview</span>
+            </TabsTrigger>
+            <TabsTrigger value="programs" className="flex items-center space-x-2">
+              <BookOpen className="h-4 w-4" />
+              <span>Programs</span>
+            </TabsTrigger>
+            <TabsTrigger value="quizzes" className="flex items-center space-x-2">
+              <FileText className="h-4 w-4" />
+              <span>Quizzes</span>
+            </TabsTrigger>
+            <TabsTrigger value="meetings" className="flex items-center space-x-2">
+              <Video className="h-4 w-4" />
+              <span>Meetings</span>
+            </TabsTrigger>
+            <TabsTrigger value="achievements" className="flex items-center space-x-2">
+              <Trophy className="h-4 w-4" />
+              <span>Achievements</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid lg:grid-cols-2 gap-6">
+              {/* Recent Activity */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Activity</CardTitle>
+                  <CardDescription>Your latest learning activities</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {progressSummary?.recent_activity && progressSummary.recent_activity.length > 0 ? (
+                    progressSummary.recent_activity.slice(0, 5).map((activity, index) => (
+                      <div key={index} className="flex items-center space-x-4 p-3 border rounded-lg">
+                        <div className="p-2 bg-primary/10 rounded-lg">
+                          {activity.type === 'quiz_attempt' ? (
+                            <FileText className="h-4 w-4 text-primary" />
+                          ) : (
+                            <Video className="h-4 w-4 text-primary" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium">{activity.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {new Date(activity.date).toLocaleDateString()}
+                            {activity.score && ` • Score: ${activity.score}%`}
+                          </p>
+                        </div>
+                        <Badge variant={activity.status === 'completed' ? 'default' : 'secondary'}>
+                          {activity.status}
+                        </Badge>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No recent activity</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Quick Actions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                  <CardDescription>Jump into your learning activities</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button className="w-full justify-start" size="lg">
+                    <Play className="h-4 w-4 mr-2" />
+                    Take Available Quiz
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" size="lg">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    View Schedule
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" size="lg">
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Browse Programs
+                  </Button>
+                  <Button variant="outline" className="w-full justify-start" size="lg">
+                    <Trophy className="h-4 w-4 mr-2" />
+                    View Achievements
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="programs" className="space-y-6">
+            <ProgramProgressCard enrollments={enrollments} />
+          </TabsContent>
+
+          <TabsContent value="quizzes" className="space-y-6">
+            <QuizTakingInterface />
+          </TabsContent>
+
+          <TabsContent value="meetings" className="space-y-6">
+            <MeetingAccessInterface meetings={upcomingMeetings} isLoading={isLoadingMeetings} />
+          </TabsContent>
+
+          <TabsContent value="achievements" className="space-y-6">
+            <AchievementSystem achievements={progressSummary?.achievements} />
+          </TabsContent>
+        </Tabs>
       </div>
     </DashboardLayout>
   );
 }
+
+export default StudentDashboard;

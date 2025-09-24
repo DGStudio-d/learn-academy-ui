@@ -10,7 +10,16 @@ import type {
   Enrollment,
   AdminSettings,
   DashboardStats,
-  ApiErrorResponse
+  ApiErrorResponse,
+  UserStatistics,
+  EnrollmentStatistics,
+  SystemStatistics,
+  ProgramDetails,
+  EnrollmentDetails,
+  SettingsCategory,
+  SystemLog,
+  ImportResult,
+  BackupResult
 } from '../types/api';
 import { ApiErrorHandler } from '../lib/errorHandler';
 
@@ -307,6 +316,198 @@ export const adminService = {
     }
   },
 
+  // Bulk user operations
+  bulkUpdateUsers: async (userIds: number[], updates: Partial<User>): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/users/bulk-update', {
+        user_ids: userIds,
+        updates
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to bulk update users');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to bulk update users'
+      });
+      throw error;
+    }
+  },
+
+  // Bulk delete users
+  bulkDeleteUsers: async (userIds: number[]): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/users/bulk-delete', {
+        user_ids: userIds
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to bulk delete users');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to bulk delete users'
+      });
+      throw error;
+    }
+  },
+
+  // Bulk create users
+  bulkCreateUsers: async (usersData: Array<{
+    name: string;
+    email: string;
+    password: string;
+    role: 'admin' | 'teacher' | 'student';
+    phone?: string;
+    preferred_language?: 'ar' | 'en' | 'es';
+  }>): Promise<User[]> => {
+    try {
+      const response = await api.post<ApiResponse<User[]>>('/admin/users/bulk-create', {
+        users: usersData
+      });
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to bulk create users');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to bulk create users'
+      });
+      throw error;
+    }
+  },
+
+  // Export users data
+  exportUsers: async (filters?: {
+    role?: string;
+    search?: string;
+    format?: 'csv' | 'excel';
+  }): Promise<Blob> => {
+    try {
+      const params = new URLSearchParams();
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value);
+        });
+      }
+      
+      const response = await api.get(`/admin/users/export?${params}`, {
+        responseType: 'blob'
+      });
+      
+      return response.data;
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to export users'
+      });
+      throw error;
+    }
+  },
+
+  // Import users from file
+  importUsers: async (file: File): Promise<ImportResult> => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await api.post<ApiResponse<ImportResult>>('/admin/users/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to import users');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to import users'
+      });
+      throw error;
+    }
+  },
+
+  // Advanced user statistics
+  getUserStatistics: async (filters?: {
+    date_from?: string;
+    date_to?: string;
+    role?: string;
+  }): Promise<UserStatistics> => {
+    try {
+      const params = new URLSearchParams();
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value);
+        });
+      }
+      
+      const response = await api.get<ApiResponse<any>>(`/admin/statistics/users?${params}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get user statistics');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get user statistics'
+      });
+      throw error;
+    }
+  },
+
+  // Enrollment statistics
+  getEnrollmentStatistics: async (filters?: {
+    date_from?: string;
+    date_to?: string;
+    program_id?: number;
+  }): Promise<EnrollmentStatistics> => {
+    try {
+      const params = new URLSearchParams();
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value.toString());
+        });
+      }
+      
+      const response = await api.get<ApiResponse<any>>(`/admin/statistics/enrollments?${params}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get enrollment statistics');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get enrollment statistics'
+      });
+      throw error;
+    }
+  },
+
+  // System statistics
+  getSystemStatistics: async (): Promise<SystemStatistics> => {
+    try {
+      const response = await api.get<ApiResponse<any>>('/admin/statistics/system');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get system statistics');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get system statistics'
+      });
+      throw error;
+    }
+  },
+
   // Settings Management
   getSettings: async (): Promise<AdminSettings> => {
     const response = await api.get<ApiResponse<AdminSettings>>('/admin/settings');
@@ -357,6 +558,220 @@ export const adminService = {
     
     if (!response.data.success) {
       throw new Error(response.data.message || 'Failed to update translations');
+    }
+  },
+
+  // Advanced program management
+  getProgramDetails: async (programId: number): Promise<ProgramDetails> => {
+    try {
+      const response = await api.get<ApiResponse<any>>(`/admin/programs/${programId}/details`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get program details');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get program details'
+      });
+      throw error;
+    }
+  },
+
+  // Bulk program operations
+  bulkUpdatePrograms: async (programIds: number[], updates: Partial<Program>): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/programs/bulk-update', {
+        program_ids: programIds,
+        updates
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to bulk update programs');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to bulk update programs'
+      });
+      throw error;
+    }
+  },
+
+  // Bulk delete programs
+  bulkDeletePrograms: async (programIds: number[]): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/programs/bulk-delete', {
+        program_ids: programIds
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to bulk delete programs');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to bulk delete programs'
+      });
+      throw error;
+    }
+  },
+
+  // Advanced enrollment management
+  getEnrollmentDetails: async (enrollmentId: number): Promise<EnrollmentDetails> => {
+    try {
+      const response = await api.get<ApiResponse<any>>(`/admin/enrollments/${enrollmentId}/details`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get enrollment details');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get enrollment details'
+      });
+      throw error;
+    }
+  },
+
+  // Bulk enrollment operations with notes
+  bulkEnrollmentActionWithNotes: async (
+    enrollmentIds: number[], 
+    action: 'approve' | 'reject',
+    notes?: string
+  ): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/enrollments/bulk-action-with-notes', {
+        enrollment_ids: enrollmentIds,
+        action,
+        notes
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to perform bulk action');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to perform bulk enrollment action'
+      });
+      throw error;
+    }
+  },
+
+  // Advanced settings management
+  getSettingsCategories: async (): Promise<SettingsCategory[]> => {
+    try {
+      const response = await api.get<ApiResponse<any>>('/admin/settings/categories');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get settings categories');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get settings categories'
+      });
+      throw error;
+    }
+  },
+
+  // Update specific setting
+  updateSetting: async (key: string, value: any): Promise<void> => {
+    try {
+      const response = await api.put<ApiResponse>(`/admin/settings/${key}`, { value });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to update setting');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to update setting'
+      });
+      throw error;
+    }
+  },
+
+  // Reset settings to default
+  resetSettings: async (category?: string): Promise<void> => {
+    try {
+      const url = category ? `/admin/settings/reset/${category}` : '/admin/settings/reset';
+      const response = await api.post<ApiResponse>(url);
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to reset settings');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to reset settings'
+      });
+      throw error;
+    }
+  },
+
+  // System maintenance operations
+  clearCache: async (cacheType?: 'all' | 'translations' | 'users' | 'programs'): Promise<void> => {
+    try {
+      const response = await api.post<ApiResponse>('/admin/maintenance/clear-cache', {
+        cache_type: cacheType || 'all'
+      });
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to clear cache');
+      }
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to clear cache'
+      });
+      throw error;
+    }
+  },
+
+  // Generate system backup
+  generateBackup: async (): Promise<BackupResult> => {
+    try {
+      const response = await api.post<ApiResponse<BackupResult>>('/admin/maintenance/backup');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to generate backup');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to generate backup'
+      });
+      throw error;
+    }
+  },
+
+  // Get system logs
+  getSystemLogs: async (filters?: {
+    level?: 'error' | 'warning' | 'info' | 'debug';
+    date_from?: string;
+    date_to?: string;
+    limit?: number;
+  }): Promise<SystemLog[]> => {
+    try {
+      const params = new URLSearchParams();
+      if (filters) {
+        Object.entries(filters).forEach(([key, value]) => {
+          if (value) params.append(key, value.toString());
+        });
+      }
+      
+      const response = await api.get<ApiResponse<SystemLog[]>>(`/admin/logs?${params}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get system logs');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get system logs'
+      });
+      throw error;
     }
   },
 };

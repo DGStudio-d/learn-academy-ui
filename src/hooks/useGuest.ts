@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { guestService } from '../services/guestService';
+import type { Program } from '../types/api';
 
 // Fallback data for when API is not available
 const FALLBACK_LANGUAGES = [
@@ -47,9 +48,43 @@ const FALLBACK_TEACHERS = [
   },
 ];
 
+const FALLBACK_PROGRAMS: Program[] = [
+  {
+    id: 1,
+    name: 'English for Business',
+    description: 'Master professional English communication skills for the modern workplace',
+    language_id: 1,
+    teacher_id: 1,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    name: 'Spanish Conversation Intensive',
+    description: 'Build confidence in speaking Spanish through interactive conversation practice',
+    language_id: 2,
+    teacher_id: 3,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    name: 'Arabic for Beginners',
+    description: 'Learn Modern Standard Arabic from alphabet to basic conversations',
+    language_id: 3,
+    teacher_id: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
 const FALLBACK_SETTINGS = {
   guest_can_access_languages: true,
   guest_can_access_teachers: true,
+  guest_can_access_programs: true,
   guest_can_access_quizzes: false,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -230,6 +265,86 @@ export const useGuestQuizResult = (attemptId: number) => {
     queryKey: ['guest', 'quiz-result', attemptId],
     queryFn: () => guestService.getGuestQuizResult(attemptId),
     enabled: !!attemptId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    retry: false,
+  });
+};
+
+// Guest programs hooks
+export const useGuestPrograms = () => {
+  return useQuery({
+    queryKey: ['guest', 'programs'],
+    queryFn: async () => {
+      try {
+        return await guestService.getPrograms();
+      } catch (error) {
+        console.warn('Guest programs API not available, using fallback data:', error);
+        return FALLBACK_PROGRAMS;
+      }
+    },
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    retry: false,
+  });
+};
+
+export const useGuestProgram = (programId: number) => {
+  return useQuery({
+    queryKey: ['guest', 'program', programId],
+    queryFn: async () => {
+      try {
+        return await guestService.getProgram(programId);
+      } catch (error) {
+        console.warn('Guest program API not available, using fallback data:', error);
+        // Return a fallback program based on ID
+        return FALLBACK_PROGRAMS.find(p => p.id === programId) || FALLBACK_PROGRAMS[0];
+      }
+    },
+    enabled: !!programId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    retry: false,
+  });
+};
+
+// Guest quiz hooks by program/language
+export const useGuestQuizzesByProgram = (programId: number) => {
+  return useQuery({
+    queryKey: ['guest', 'quizzes', 'program', programId],
+    queryFn: async () => {
+      try {
+        return await guestService.getQuizzesByProgram(programId);
+      } catch (error) {
+        console.warn('Guest program quizzes API not available, returning empty array:', error);
+        return [];
+      }
+    },
+    enabled: !!programId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
+  });
+};
+
+export const useGuestQuizzesByLanguage = (languageId: number) => {
+  return useQuery({
+    queryKey: ['guest', 'quizzes', 'language', languageId],
+    queryFn: async () => {
+      try {
+        return await guestService.getQuizzesByLanguage(languageId);
+      } catch (error) {
+        console.warn('Guest language quizzes API not available, returning empty array:', error);
+        return [];
+      }
+    },
+    enabled: !!languageId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: false,
+  });
+};
+
+// Guest access control hook
+export const useGuestAccess = (contentType: 'languages' | 'teachers' | 'programs' | 'quizzes') => {
+  return useQuery({
+    queryKey: ['guest', 'access', contentType],
+    queryFn: () => guestService.canAccessContent(contentType),
     staleTime: 10 * 60 * 1000, // 10 minutes
     retry: false,
   });

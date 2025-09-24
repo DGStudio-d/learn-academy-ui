@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { ApiErrorHandler } from './errorHandler';
+import { config } from './config';
 import type { ApiResponse, ApiErrorResponse } from '@/types/api';
 
 // Extend Axios types to include custom metadata
@@ -14,26 +15,26 @@ declare module 'axios' {
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://api.learnaccademy.com/api',
+  baseURL: config.api.baseURL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
   },
-  timeout: 15000, // 15 second timeout
+  timeout: config.api.timeout,
   withCredentials: false, // Don't send cookies
 });
 
 // Request retry configuration
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
+const MAX_RETRIES = config.api.retryAttempts;
+const RETRY_DELAY = config.api.retryDelay;
 
 // Request queue for handling concurrent requests
 const requestQueue = new Map<string, Promise<any>>();
 
 // Token management
-const TOKEN_KEY = 'learn_academy_token';
-const USER_KEY = 'learn_academy_user';
+const TOKEN_KEY = config.auth.tokenKey;
+const USER_KEY = config.auth.userKey;
 
 export const getStoredToken = (): string | null => {
   try {
@@ -119,7 +120,7 @@ api.interceptors.response.use(
     const duration = startTime ? Date.now() - startTime : 0;
     
     // Log slow requests in development
-    if (process.env.NODE_ENV === 'development' && duration > 2000) {
+    if (config.app.isDevelopment && duration > 2000) {
       console.warn(`Slow API request (${duration}ms):`, {
         url: response.config.url,
         method: response.config.method,

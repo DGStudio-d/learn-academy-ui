@@ -6,7 +6,9 @@ import type {
   Quiz,
   QuizAttempt,
   AdminSettings,
-  ApiErrorResponse
+  ApiErrorResponse,
+  Program,
+  PaginatedResponse
 } from '../types/api';
 import { ApiErrorHandler } from '../lib/errorHandler';
 
@@ -49,46 +51,74 @@ export const guestService = {
 
   // Get public teachers (if guest access is enabled)
   getTeachers: async (): Promise<User[]> => {
-    const response = await api.get<ApiResponse<User[]>>('/guest/teachers');
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<User[]>>('/guest/teachers');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get teachers');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get teachers'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get teachers');
   },
 
   // Get teacher details (if guest access is enabled)
   getTeacher: async (teacherId: number): Promise<User> => {
-    const response = await api.get<ApiResponse<User>>(`/guest/teachers/${teacherId}`);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<User>>(`/guest/teachers/${teacherId}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get teacher');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get teacher'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get teacher');
   },
 
   // Get public quizzes (if guest access is enabled)
   getQuizzes: async (): Promise<Quiz[]> => {
-    const response = await api.get<ApiResponse<Quiz[]>>('/guest/quizzes');
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<Quiz[]>>('/guest/quizzes');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get quizzes');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get quizzes'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get quizzes');
   },
 
   // Get quiz details for guests
   getQuiz: async (quizId: number): Promise<Quiz> => {
-    const response = await api.get<ApiResponse<Quiz>>(`/guest/quizzes/${quizId}`);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<Quiz>>(`/guest/quizzes/${quizId}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get quiz');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get quiz'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get quiz');
   },
 
   // Submit guest quiz attempt
@@ -97,24 +127,133 @@ export const guestService = {
     guest_email?: string;
     answers: Record<string, number>;
   }): Promise<QuizAttempt> => {
-    const response = await api.post<ApiResponse<QuizAttempt>>(`/guest/quizzes/${quizId}/attempt`, attemptData);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.post<ApiResponse<QuizAttempt>>(`/guest/quizzes/${quizId}/attempt`, attemptData);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to submit quiz attempt');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to submit quiz attempt'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to submit quiz attempt');
   },
 
   // Get quiz attempt result (for guests)
   getQuizAttempt: async (attemptId: number): Promise<QuizAttempt> => {
-    const response = await api.get<ApiResponse<QuizAttempt>>(`/guest/quiz-attempts/${attemptId}`);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<QuizAttempt>>(`/guest/quiz-attempts/${attemptId}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get quiz attempt');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get quiz attempt'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get quiz attempt');
+  },
+
+  // Get public programs (if guest access is enabled)
+  getPrograms: async (): Promise<Program[]> => {
+    try {
+      const response = await api.get<ApiResponse<Program[]>>('/guest/programs');
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get programs');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get programs'
+      });
+      throw error;
+    }
+  },
+
+  // Get program details (if guest access is enabled)
+  getProgram: async (programId: number): Promise<Program> => {
+    try {
+      const response = await api.get<ApiResponse<Program>>(`/guest/programs/${programId}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get program');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get program'
+      });
+      throw error;
+    }
+  },
+
+  // Get public quizzes by program (if guest access is enabled)
+  getQuizzesByProgram: async (programId: number): Promise<Quiz[]> => {
+    try {
+      const response = await api.get<ApiResponse<Quiz[]>>(`/guest/programs/${programId}/quizzes`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get program quizzes');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get program quizzes'
+      });
+      throw error;
+    }
+  },
+
+  // Get public quizzes by language (if guest access is enabled)
+  getQuizzesByLanguage: async (languageId: number): Promise<Quiz[]> => {
+    try {
+      const response = await api.get<ApiResponse<Quiz[]>>(`/guest/languages/${languageId}/quizzes`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get language quizzes');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get language quizzes'
+      });
+      throw error;
+    }
+  },
+
+  // Check if guest can access specific content type
+  canAccessContent: async (contentType: 'languages' | 'teachers' | 'programs' | 'quizzes'): Promise<boolean> => {
+    try {
+      const settings = await guestService.getGuestSettings();
+      
+      switch (contentType) {
+        case 'languages':
+          return settings.guest_can_access_languages ?? true;
+        case 'teachers':
+          return settings.guest_can_access_teachers ?? true;
+        case 'programs':
+          return settings.guest_can_access_programs ?? false;
+        case 'quizzes':
+          return settings.guest_can_access_quizzes ?? false;
+        default:
+          return false;
+      }
+    } catch (error) {
+      // If we can't get settings, allow basic access to languages and teachers
+      return contentType === 'languages' || contentType === 'teachers';
+    }
   },
 
   // Legacy endpoints for compatibility
@@ -124,19 +263,26 @@ export const guestService = {
     attempt_id: number;
     quiz: Quiz;
   }> => {
-    const response = await api.post<ApiResponse<{
-      attempt_id: number;
-      quiz: Quiz;
-    }>>(`/guest/quiz/${quizId}/start`, {
-      guest_name: guestName,
-      guest_email: guestEmail
-    });
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.post<ApiResponse<{
+        attempt_id: number;
+        quiz: Quiz;
+      }>>(`/guest/quiz/${quizId}/start`, {
+        guest_name: guestName,
+        guest_email: guestEmail
+      });
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to start guest quiz');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to start guest quiz'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to start guest quiz');
   },
 
   // Legacy: Submit guest quiz
@@ -145,23 +291,37 @@ export const guestService = {
     guest_email?: string;
     answers: Record<string, number>;
   }): Promise<QuizAttempt> => {
-    const response = await api.post<ApiResponse<QuizAttempt>>(`/guest/quiz/${quizId}/submit`, attemptData);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.post<ApiResponse<QuizAttempt>>(`/guest/quiz/${quizId}/submit`, attemptData);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to submit guest quiz');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to submit guest quiz'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to submit guest quiz');
   },
 
   // Legacy: Get guest quiz result
   getGuestQuizResult: async (attemptId: number): Promise<QuizAttempt> => {
-    const response = await api.get<ApiResponse<QuizAttempt>>(`/guest/quiz-result/${attemptId}`);
-    
-    if (response.data.success && response.data.data) {
-      return response.data.data;
+    try {
+      const response = await api.get<ApiResponse<QuizAttempt>>(`/guest/quiz-result/${attemptId}`);
+      
+      if (response.data.success && response.data.data) {
+        return response.data.data;
+      }
+      
+      throw new Error(response.data.message || 'Failed to get quiz result');
+    } catch (error) {
+      const errorDetails = ApiErrorHandler.handleError(error as ApiErrorResponse, {
+        customMessage: 'Failed to get quiz result'
+      });
+      throw error;
     }
-    
-    throw new Error(response.data.message || 'Failed to get quiz result');
   },
 };

@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Link } from 'react-router-dom';
 import { Users, Clock, BookOpen, Star, Loader2, Globe } from 'lucide-react';
 import { useGuestLanguages, useGuestSettings } from '@/hooks/useGuest';
+import { GuestLanguageAccess } from '@/components/guest/GuestAccessControl';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -79,108 +80,110 @@ export function Languages() {
       {/* Languages Grid */}
       <section className="py-20">
         <div className="container">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {languagesLoading ? (
-              // Loading skeletons
-              Array.from({ length: 6 }).map((_, index) => (
-                <Card key={index} className="card-brand overflow-hidden">
-                  <Skeleton className="h-48 w-full" />
-                  <CardHeader>
-                    <Skeleton className="h-6 w-32" />
-                    <Skeleton className="h-4 w-full" />
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-4 w-20" />
-                    </div>
-                    <div className="flex space-x-2">
-                      <Skeleton className="h-10 flex-1" />
-                      <Skeleton className="h-10 flex-1" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))
-            ) : languages && languages.length > 0 ? (
-              languages.map((language, index) => {
-                const langData = getLanguageData(language);
-                return (
-                  <Card key={language.id} className="card-brand hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={langData.image}
-                        alt={`${language.name} language course`}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-white/90 text-primary font-semibold">
-                          <span className="mr-2">{langData.flag}</span>
-                          {language.name}
-                        </Badge>
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <Badge className="bg-primary text-primary-foreground">
-                          <Star className="h-3 w-3 mr-1 fill-current" />
-                          {langData.rating}
-                        </Badge>
-                      </div>
-                    </div>
-                    
+          <GuestLanguageAccess>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {languagesLoading ? (
+                // Loading skeletons
+                Array.from({ length: 6 }).map((_, index) => (
+                  <Card key={index} className="card-brand overflow-hidden">
+                    <Skeleton className="h-48 w-full" />
                     <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <span>{language.name}</span>
-                      </CardTitle>
-                      <CardDescription>{langData.description}</CardDescription>
+                      <Skeleton className="h-6 w-32" />
+                      <Skeleton className="h-4 w-full" />
                     </CardHeader>
-                    
                     <CardContent className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div className="flex items-center space-x-2">
-                          <Users className="h-4 w-4 text-primary" />
-                          <span>{langData.students} students</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <BookOpen className="h-4 w-4 text-primary" />
-                          <span>{langData.levels} levels</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Clock className="h-4 w-4 text-primary" />
-                          <span>{langData.duration}</span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Users className="h-4 w-4 text-primary" />
-                          <span>{langData.teachers} teachers</span>
-                        </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-4 w-20" />
+                        <Skeleton className="h-4 w-20" />
                       </div>
-                      
                       <div className="flex space-x-2">
-                        <Button className="flex-1 btn-hero" asChild>
-                          <Link to={`/languages/${language.id}`}>View Details</Link>
-                        </Button>
-                        <Button variant="outline" className="flex-1" asChild>
-                          <Link to="/register">Enroll Now</Link>
-                        </Button>
+                        <Skeleton className="h-10 flex-1" />
+                        <Skeleton className="h-10 flex-1" />
                       </div>
                     </CardContent>
                   </Card>
-                );
-              })
-            ) : (
-              // Empty state when no languages
-              <div className="col-span-full text-center py-12">
-                <Globe className="h-16 w-16 mx-auto text-muted-foreground mb-6" />
-                <h3 className="text-xl font-semibold mb-4">No Languages Available</h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                  Our language courses are being prepared. Please check back soon or contact us for more information.
-                </p>
-                <Button asChild>
-                  <Link to="/register">Get Notified When Available</Link>
-                </Button>
-              </div>
-            )}
-          </div>
+                ))
+              ) : languages && languages.length > 0 ? (
+                languages.map((language, index) => {
+                  const langData = getLanguageData(language);
+                  return (
+                    <Card key={language.id} className="card-brand hover:scale-105 transition-all duration-300 overflow-hidden animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={langData.image}
+                          alt={`${language.name} language course`}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-4 left-4">
+                          <Badge className="bg-white/90 text-primary font-semibold">
+                            <span className="mr-2">{langData.flag}</span>
+                            {language.name}
+                          </Badge>
+                        </div>
+                        <div className="absolute top-4 right-4">
+                          <Badge className="bg-primary text-primary-foreground">
+                            <Star className="h-3 w-3 mr-1 fill-current" />
+                            {langData.rating}
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                          <span>{language.name}</span>
+                        </CardTitle>
+                        <CardDescription>{langData.description}</CardDescription>
+                      </CardHeader>
+                      
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4 text-primary" />
+                            <span>{langData.students} students</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <BookOpen className="h-4 w-4 text-primary" />
+                            <span>{langData.levels} levels</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Clock className="h-4 w-4 text-primary" />
+                            <span>{langData.duration}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Users className="h-4 w-4 text-primary" />
+                            <span>{langData.teachers} teachers</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex space-x-2">
+                          <Button className="flex-1 btn-hero" asChild>
+                            <Link to={`/languages/${language.id}`}>View Details</Link>
+                          </Button>
+                          <Button variant="outline" className="flex-1" asChild>
+                            <Link to="/register">Enroll Now</Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })
+              ) : (
+                // Empty state when no languages
+                <div className="col-span-full text-center py-12">
+                  <Globe className="h-16 w-16 mx-auto text-muted-foreground mb-6" />
+                  <h3 className="text-xl font-semibold mb-4">No Languages Available</h3>
+                  <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    Our language courses are being prepared. Please check back soon or contact us for more information.
+                  </p>
+                  <Button asChild>
+                    <Link to="/register">Get Notified When Available</Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </GuestLanguageAccess>
         </div>
       </section>
 
@@ -209,3 +212,5 @@ export function Languages() {
     </div>
   );
 }
+
+export default Languages;

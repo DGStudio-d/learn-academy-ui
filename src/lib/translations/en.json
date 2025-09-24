@@ -8,7 +8,37 @@
     "login": "Login",
     "register": "Register",
     "dashboard": "Dashboard",
-    "logout": "Logout"
+    "logout": "Logout",
+    "profile": "Profile",
+    "settings": "Settings",
+    "users": "Users",
+    "programs": "Programs",
+    "quizzes": "Quizzes",
+    "meetings": "Meetings",
+    "students": "Students",
+    "results": "Results",
+    "reports": "Reports",
+    "notifications": "Notifications",
+    "help": "Help",
+    "messages": "Messages",
+    "content": "Content",
+    "achievements": "Achievements",
+    "progress": "Progress",
+    "enrollments": "Enrollments",
+    "admin": "Admin",
+    "teacher": "Teacher",
+    "student": "Student",
+    "management": "Management",
+    "main": "Main",
+    "tools": "Tools",
+    "support": "Support",
+    "system": "System",
+    "quiz": "Quiz",
+    "meeting": "Meeting",
+    "program": "Program",
+    "user": "User",
+    "language": "Language",
+    "search": "Search..."
   },
   "common": {
     "loading": "Loading...",
@@ -22,6 +52,9 @@
     "view": "View",
     "submit": "Submit",
     "search": "Search",
+    "optional": "optional",
+    "done": "Done",
+    "goBack": "Go Back",
     "apiOffline": "Backend API is not available. Showing demo content for preview purposes."
   },
   "landing": {
@@ -176,6 +209,7 @@
       "spanishBasics": "Spanish Basics Quiz",
       "ready": "Ready to test your Spanish knowledge? This quick quiz will help you understand your current level.",
       "start": "Start Quiz",
+      "startQuiz": "Start Quiz",
       "complete": "Quiz Complete!",
       "scored": "You scored {{score}} out of {{total}}",
       "perfect": "Perfect! You're ready for advanced lessons!",
@@ -186,7 +220,60 @@
       "exit": "Exit Quiz",
       "next": "Next",
       "finish": "Finish",
-      "questionOf": "{{current}} of {{total}}"
+      "questionOf": "{{current}} of {{total}}",
+      "loading": "Loading quiz...",
+      "loadError": "Failed to load quiz. Please try again.",
+      "error": "Error",
+      "nameRequired": "Please enter your name to continue",
+      "submitted": "Quiz Submitted",
+      "submittedDesc": "Your answers have been recorded successfully",
+      "submitError": "Failed to submit quiz. Please try again.",
+      "guestInfo": "Guest Information",
+      "name": "Your Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email (optional)",
+      "questions": "questions",
+      "minutes": "minutes",
+      "multipleChoice": "Multiple Choice",
+      "previous": "Previous",
+      "submit": "Submit Quiz",
+      "submitting": "Submitting...",
+      "excellent": "Excellent work!",
+      "needsPractice": "Keep practicing!",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "total": "Total",
+      "lastAttempt": "Last Attempt",
+      "retake": "Retake Quiz"
+    },
+    "quizzes": {
+      "title": "Practice Quizzes",
+      "subtitle": "Test your language skills with our interactive quizzes. No registration required!",
+      "noQuizzes": "No Quizzes Available",
+      "noQuizzesDesc": "Public quizzes are being prepared. Please check back soon or create an account to access more content.",
+      "checkBack": "Check Back Later",
+      "loadError": "Failed to load quizzes. Please try again later."
+    },
+    "access": {
+      "error": "Unable to check access permissions. Please try again later.",
+      "loginPrompt": "Create a free account or sign in to access more content and track your progress.",
+      "languages": {
+        "title": "Languages Access Restricted",
+        "description": "Language information is currently restricted to registered users."
+      },
+      "teachers": {
+        "title": "Teacher Profiles Access Restricted", 
+        "description": "Teacher profiles are currently restricted to registered users."
+      },
+      "programs": {
+        "title": "Programs Access Restricted",
+        "description": "Program information is currently restricted to registered users."
+      },
+      "quizzes": {
+        "title": "Quizzes Access Restricted",
+        "description": "Public quizzes are currently restricted. Please create an account to access our quiz library."
+      }
     }
   },
   "programs": {

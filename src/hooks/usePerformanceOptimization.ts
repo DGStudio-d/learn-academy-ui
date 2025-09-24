@@ -1,17 +1,23 @@
-import { useEffect, useCallback, useMemo, useRef } from 'react'
+import { useEffect, useCallback, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { PerformanceMonitor } from '@/utils/performance'
 
-// Performance optimization hooks
+// Enhanced performance optimization hooks
 export function usePerformanceOptimization() {
   const location = useLocation()
   const renderCount = useRef(0)
   const startTime = useRef(performance.now())
+  const monitor = PerformanceMonitor.getInstance()
 
-  // Track component renders
+  // Track component renders with enhanced monitoring
   useEffect(() => {
     renderCount.current += 1
     const endTime = performance.now()
     const renderTime = endTime - startTime.current
+    
+    // Track page performance
+    monitor.trackPageLoad(location.pathname)
+    monitor.trackComponentRender(`page_${location.pathname}`, renderTime)
     
     if (process.env.NODE_ENV === 'development') {
       console.log(`Page ${location.pathname} rendered ${renderCount.current} times in ${renderTime}ms`)
@@ -20,47 +26,93 @@ export function usePerformanceOptimization() {
     startTime.current = endTime
   })
 
-  // Debounced function creator
+  // Initialize Web Vitals monitoring
+  useEffect(() => {
+    monitor.observeWebVitals()
+    
+    return () => {
+      monitor.disconnect()
+    }
+  }, [monitor])
+
+  // Debounced function creator with performance tracking
   const createDebouncedFunction = useCallback(<T extends (...args: any[]) => any>(
     func: T,
-    delay: number
+    delay: number,
+    trackingName?: string
   ): T => {
     let timeoutId: NodeJS.Timeout
     
     return ((...args: Parameters<T>) => {
       clearTimeout(timeoutId)
-      timeoutId = setTimeout(() => func(...args), delay)
+      timeoutId = setTimeout(() => {
+        const startTime = performance.now()
+        const result = func(...args)
+        const endTime = performance.now()
+        
+        if (trackingName) {
+          monitor.trackUserInteraction(`debounced_${trackingName}`, endTime - startTime)
+        }
+        
+        return result
+      }, delay)
     }) as T
-  }, [])
+  }, [monitor])
 
-  // Throttled function creator
+  // Throttled function creator with performance tracking
   const createThrottledFunction = useCallback(<T extends (...args: any[]) => any>(
     func: T,
-    limit: number
+    limit: number,
+    trackingName?: string
   ): T => {
     let inThrottle: boolean
     
     return ((...args: Parameters<T>) => {
       if (!inThrottle) {
-        func(...args)
+        const startTime = performance.now()
+        const result = func(...args)
+        const endTime = performance.now()
+        
+        if (trackingName) {
+          monitor.trackUserInteraction(`throttled_${trackingName}`, endTime - startTime)
+        }
+        
         inThrottle = true
         setTimeout(() => inThrottle = false, limit)
+        return result
       }
     }) as T
-  }, [])
+  }, [monitor])
 
-  // Memoized calculations
+  // Memoized calculations with performance tracking
   const memoizedCalculation = useCallback(<T>(
     calculation: () => T,
-    dependencies: any[]
+    dependencies: any[],
+    trackingName?: string
   ): T => {
-    return useMemo(calculation, dependencies)
-  }, [])
+    return useMemo(() => {
+      const startTime = performance.now()
+      const result = calculation()
+      const endTime = performance.now()
+      
+      if (trackingName) {
+        monitor.trackComponentRender(`memoized_${trackingName}`, endTime - startTime)
+      }
+      
+      return result
+    }, dependencies)
+  }, [monitor])
+
+  // Get performance metrics
+  const getPerformanceMetrics = useCallback(() => {
+    return monitor.getMetrics()
+  }, [monitor])
 
   return {
     createDebouncedFunction,
     createThrottledFunction,
     memoizedCalculation,
+    getPerformanceMetrics,
     renderCount: renderCount.current
   }
 }

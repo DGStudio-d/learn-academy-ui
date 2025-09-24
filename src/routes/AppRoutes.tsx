@@ -33,6 +33,12 @@ const AdminTeachers = lazy(() => import('../pages/admin/Teachers'))
 const AdminSettings = lazy(() => import('../pages/admin/Settings'))
 const AdminReports = lazy(() => import('../pages/admin/Reports'))
 
+// Search pages
+const AdvancedSearch = lazy(() => import('../pages/AdvancedSearch'))
+
+// Demo pages
+const FormDemo = lazy(() => import('../pages/FormDemo'))
+
 // Page wrapper with error boundary and loading
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (
   <ErrorBoundary>
@@ -55,6 +61,24 @@ export function AppRoutes() {
         <ProtectedRoute>
           <AppLayout>
             <PageWrapper><Dashboard /></PageWrapper>
+          </AppLayout>
+        </ProtectedRoute>
+      } />
+
+      {/* Search routes */}
+      <Route path="/search" element={
+        <ProtectedRoute>
+          <AppLayout>
+            <PageWrapper><AdvancedSearch /></PageWrapper>
+          </AppLayout>
+        </ProtectedRoute>
+      } />
+
+      {/* Demo routes */}
+      <Route path="/demo/forms" element={
+        <ProtectedRoute>
+          <AppLayout>
+            <PageWrapper><FormDemo /></PageWrapper>
           </AppLayout>
         </ProtectedRoute>
       } />

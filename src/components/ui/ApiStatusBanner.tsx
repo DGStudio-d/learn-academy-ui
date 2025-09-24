@@ -38,12 +38,21 @@ export function ApiStatusBanner() {
     // Check if we're already showing fallback data
     const checkApiStatus = async () => {
       try {
-        const response = await fetch(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api' + '/health');
+        const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${baseURL}/health`, { 
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          signal: AbortSignal.timeout(5000) // 5 second timeout
+        });
         if (!response.ok) {
           setIsApiDown(true);
           setIsVisible(true);
         }
       } catch (error) {
+        console.warn('API health check failed:', error);
         setIsApiDown(true);
         setIsVisible(true);
       }

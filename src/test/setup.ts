@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom'
+import { toHaveNoViolations } from 'jest-axe'
 import { cleanup } from '@testing-library/react'
-import { afterEach, vi } from 'vitest'
+import { afterEach, vi, expect } from 'vitest'
+
+// Extend Jest matchers with accessibility testing
+expect.extend(toHaveNoViolations)
 
 // Cleanup after each test
 afterEach(() => {
@@ -68,3 +72,23 @@ const sessionStorageMock = {
 Object.defineProperty(window, 'sessionStorage', {
   value: sessionStorageMock,
 })
+
+// Mock fetch for API calls
+global.fetch = vi.fn().mockImplementation(() => 
+  Promise.reject(new Error('API not available in tests'))
+)
+
+// Mock i18n API loading
+vi.mock('@/lib/i18n', async () => {
+  const actual = await vi.importActual('@/lib/i18n')
+  return {
+    ...actual,
+    loadApiTranslations: vi.fn().mockResolvedValue(null)
+  }
+})
+
+// Mock missing DOM methods for JSDOM compatibility
+Element.prototype.hasPointerCapture = vi.fn().mockReturnValue(false)
+Element.prototype.scrollIntoView = vi.fn()
+Element.prototype.setPointerCapture = vi.fn()
+Element.prototype.releasePointerCapture = vi.fn()

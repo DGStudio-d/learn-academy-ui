@@ -21,7 +21,7 @@ export const preloadCriticalRoutes = () => {
   return Promise.all([loginPromise, dashboardPromise])
 }
 
-// Route-based preloading
+// Enhanced route-based preloading
 export const routePreloader = {
   // Preload routes based on user role
   preloadForRole(role: 'student' | 'teacher' | 'admin') {
@@ -30,25 +30,27 @@ export const routePreloader = {
     switch (role) {
       case 'student':
         preloadPromises.push(
-          import('../pages/student/Dashboard'),
-          import('../pages/student/Programs'),
-          import('../pages/student/Quizzes')
+          import('../pages/dashboard/StudentDashboard'),
+          import('../pages/Programs'),
+          import('../pages/QuizAttempt'),
+          import('../pages/Profile')
         )
         break
         
       case 'teacher':
         preloadPromises.push(
-          import('../pages/teacher/Dashboard'),
-          import('../pages/teacher/Profile'),
-          import('../pages/teacher/Quizzes')
+          import('../pages/dashboard/TeacherDashboard'),
+          import('../pages/Profile'),
+          import('../pages/MeetingRoom')
         )
         break
         
       case 'admin':
         preloadPromises.push(
-          import('../pages/admin/Dashboard'),
-          import('../pages/admin/Languages'),
-          import('../pages/admin/Programs')
+          import('../pages/dashboard/AdminDashboard'),
+          import('../pages/Languages'),
+          import('../pages/Programs'),
+          import('../pages/Teachers')
         )
         break
     }
@@ -56,23 +58,82 @@ export const routePreloader = {
     return Promise.all(preloadPromises)
   },
 
-  // Preload on hover/focus
+  // Preload on hover/focus with enhanced mapping
   preloadOnHover(routeName: string) {
     const routeMap: Record<string, () => Promise<any>> = {
-      'student-programs': () => import('../pages/student/Programs'),
-      'student-quizzes': () => import('../pages/student/Quizzes'),
-      'student-meetings': () => import('../pages/student/Meetings'),
-      'teacher-quizzes': () => import('../pages/teacher/Quizzes'),
-      'teacher-results': () => import('../pages/teacher/Results'),
-      'admin-languages': () => import('../pages/admin/Languages'),
-      'admin-programs': () => import('../pages/admin/Programs'),
-      'admin-settings': () => import('../pages/admin/Settings')
+      // Dashboard routes
+      'student-dashboard': () => import('../pages/dashboard/StudentDashboard'),
+      'teacher-dashboard': () => import('../pages/dashboard/TeacherDashboard'),
+      'admin-dashboard': () => import('../pages/dashboard/AdminDashboard'),
+      
+      // Public routes
+      'languages': () => import('../pages/Languages'),
+      'teachers': () => import('../pages/Teachers'),
+      'programs': () => import('../pages/Programs'),
+      'about': () => import('../pages/About'),
+      'contact': () => import('../pages/Contact'),
+      
+      // Auth routes
+      'login': () => import('../pages/auth/Login'),
+      'register': () => import('../pages/auth/Register'),
+      
+      // Protected routes
+      'profile': () => import('../pages/Profile'),
+      'quiz-attempt': () => import('../pages/QuizAttempt'),
+      'meeting-room': () => import('../pages/MeetingRoom'),
+      
+      // Guest routes
+      'guest-quizzes': () => import('../pages/GuestQuizzes'),
     }
     
     const preloader = routeMap[routeName]
     if (preloader) {
       return preloader()
     }
+  },
+
+  // Preload critical routes immediately
+  preloadCritical() {
+    return Promise.all([
+      import('../pages/Landing'),
+      import('../pages/auth/Login'),
+      import('../pages/NotFound')
+    ])
+  },
+
+  // Smart preloading based on user behavior
+  smartPreload(currentPath: string, userRole?: string) {
+    const preloadPromises: Promise<any>[] = []
+
+    // Preload likely next routes based on current path
+    if (currentPath === '/') {
+      preloadPromises.push(
+        import('../pages/auth/Login'),
+        import('../pages/Languages'),
+        import('../pages/Programs')
+      )
+    } else if (currentPath === '/login' && userRole) {
+      // Preload dashboard based on role
+      switch (userRole) {
+        case 'student':
+          preloadPromises.push(import('../pages/dashboard/StudentDashboard'))
+          break
+        case 'teacher':
+          preloadPromises.push(import('../pages/dashboard/TeacherDashboard'))
+          break
+        case 'admin':
+          preloadPromises.push(import('../pages/dashboard/AdminDashboard'))
+          break
+      }
+    } else if (currentPath.includes('/dashboard')) {
+      // Preload common dashboard-related routes
+      preloadPromises.push(
+        import('../pages/Profile'),
+        import('../pages/Programs')
+      )
+    }
+
+    return Promise.all(preloadPromises)
   }
 }
 

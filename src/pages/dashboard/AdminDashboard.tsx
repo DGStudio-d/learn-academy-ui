@@ -19,17 +19,26 @@ import {
   FileText,
   Eye,
   EyeOff,
-  Loader2
+  Loader2,
+  Activity,
+  UserCog,
+  GraduationCap
 } from 'lucide-react';
 import {
   useAdminDashboardStats,
   useAdminUsers,
   useAdminLanguages,
   useAdminSettings,
-  useUpdateAdminSettings
+  useUpdateAdminSettings,
+  useSystemHealth
 } from '../../hooks/useAdmin';
 import { useAuth } from '../../contexts/AuthContext';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
+import { UserManagement } from '../../components/admin/UserManagement';
+import { EnrollmentManagement } from '../../components/admin/EnrollmentManagement';
+import { SystemSettings } from '../../components/admin/SystemSettings';
+import { SystemHealth } from '../../components/admin/SystemHealth';
+import { TranslationManager } from '../../components/admin/TranslationManager';
 
 export function AdminDashboard() {
   const { user } = useAuth();
@@ -37,6 +46,7 @@ export function AdminDashboard() {
   const { data: usersData, isLoading: usersLoading } = useAdminUsers(1, { sort_by: 'created_at', sort_order: 'desc' });
   const { data: languages, isLoading: languagesLoading } = useAdminLanguages();
   const { data: settings, isLoading: settingsLoading } = useAdminSettings();
+  const { data: healthData } = useSystemHealth();
   const updateSettingsMutation = useUpdateAdminSettings();
 
   const handleSettingChange = async (setting: string, value: boolean) => {
@@ -125,11 +135,12 @@ export function AdminDashboard() {
 
         {/* Main Content */}
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="languages">Languages</TabsTrigger>
-            <TabsTrigger value="teachers">Teachers</TabsTrigger>
+            <TabsTrigger value="enrollments">Enrollments</TabsTrigger>
+            <TabsTrigger value="translations">Translations</TabsTrigger>
+            <TabsTrigger value="health">System Health</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
             <TabsTrigger value="reports">Reports</TabsTrigger>
           </TabsList>
@@ -179,30 +190,58 @@ export function AdminDashboard() {
               {/* System Health */}
               <Card>
                 <CardHeader>
-                  <CardTitle>System Health</CardTitle>
+                  <CardTitle className="flex items-center justify-between">
+                    System Health
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => window.location.hash = '#health'}
+                    >
+                      <Activity className="h-4 w-4 mr-1" />
+                      View Details
+                    </Button>
+                  </CardTitle>
                   <CardDescription>Platform performance metrics</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
                       <span>Server Status</span>
-                      <Badge className="bg-green-100 text-green-800">Online</Badge>
+                      <Badge className={
+                        healthData?.server_status === 'online' ? 'bg-green-100 text-green-800' :
+                        healthData?.server_status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }>
+                        {healthData?.server_status || 'Unknown'}
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Database</span>
-                      <Badge className="bg-green-100 text-green-800">Healthy</Badge>
+                      <Badge className={
+                        healthData?.database_status === 'healthy' ? 'bg-green-100 text-green-800' :
+                        healthData?.database_status === 'warning' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }>
+                        {healthData?.database_status || 'Unknown'}
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>API Response</span>
-                      <Badge className="bg-green-100 text-green-800">Fast</Badge>
+                      <Badge className={
+                        (healthData?.response_time || 0) < 200 ? 'bg-green-100 text-green-800' :
+                        (healthData?.response_time || 0) < 500 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                      }>
+                        {healthData?.response_time ? `${healthData.response_time}ms` : 'Unknown'}
+                      </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Active Sessions</span>
-                      <span className="font-semibold">1,247</span>
+                      <span className="font-semibold">{stats?.active_sessions || 0}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span>Daily Logins</span>
-                      <span className="font-semibold">892</span>
+                      <span className="font-semibold">{stats?.daily_logins || 0}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -210,117 +249,29 @@ export function AdminDashboard() {
             </div>
           </TabsContent>
 
-          {/* Keep remaining tabs content the same */}
+          {/* User Management */}
           <TabsContent value="users" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  User Management
-                  <Button size="sm" className="btn-hero">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add User
-                  </Button>
-                </CardTitle>
-                <CardDescription>Manage user accounts and permissions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Users className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">User Management</h3>
-                  <p className="text-muted-foreground">Create and manage user accounts with role-based permissions.</p>
-                </div>
-              </CardContent>
-            </Card>
+            <UserManagement />
           </TabsContent>
 
-          <TabsContent value="languages" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  Language Management
-                  <Button size="sm" className="btn-hero">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Language
-                  </Button>
-                </CardTitle>
-                <CardDescription>Manage available languages and their programs</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <Globe className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Language Management</h3>
-                  <p className="text-muted-foreground">Add and configure languages for your platform.</p>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Enrollment Management */}
+          <TabsContent value="enrollments" className="space-y-6">
+            <EnrollmentManagement />
           </TabsContent>
 
-          <TabsContent value="teachers" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  Teacher Management
-                  <Button size="sm" className="btn-hero">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Teacher
-                  </Button>
-                </CardTitle>
-                <CardDescription>Manage teacher accounts and assignments</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <UserCheck className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">Teacher Management</h3>
-                  <p className="text-muted-foreground">Create teacher accounts, assign languages, and manage profiles.</p>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Translation Management */}
+          <TabsContent value="translations" className="space-y-6">
+            <TranslationManager />
           </TabsContent>
 
+          {/* System Health */}
+          <TabsContent value="health" className="space-y-6">
+            <SystemHealth />
+          </TabsContent>
+
+          {/* System Settings */}
           <TabsContent value="settings" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Guest Access Settings</CardTitle>
-                <CardDescription>Control what guests can access without an account</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label className="font-medium">Allow Guest Language Viewing</Label>
-                    <p className="text-sm text-muted-foreground">Let visitors browse available languages</p>
-                  </div>
-                  <Switch
-                    checked={settings?.guest_can_access_languages || false}
-                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_languages', checked)}
-                    disabled={updateSettingsMutation.isPending}
-                  />
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label className="font-medium">Allow Guest Teacher Profiles</Label>
-                    <p className="text-sm text-muted-foreground">Show teacher profiles to non-registered users</p>
-                  </div>
-                  <Switch
-                    checked={settings?.guest_can_access_teachers || false}
-                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_teachers', checked)}
-                    disabled={updateSettingsMutation.isPending}
-                  />
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <Label className="font-medium">Allow Guest Quiz Attempts</Label>
-                    <p className="text-sm text-muted-foreground">Let visitors try sample quizzes</p>
-                  </div>
-                  <Switch
-                    checked={settings?.guest_can_access_quizzes || false}
-                    onCheckedChange={(checked) => handleSettingChange('guest_can_access_quizzes', checked)}
-                    disabled={updateSettingsMutation.isPending}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            <SystemSettings />
           </TabsContent>
 
           <TabsContent value="reports">
@@ -343,3 +294,5 @@ export function AdminDashboard() {
     </DashboardLayout>
   );
 }
+
+export default AdminDashboard;
